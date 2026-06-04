@@ -1,6 +1,6 @@
 // Main Application JavaScript
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://agri-price-backend-p4yw.onrender.com/api';
 
 // Utility: Format currency
 function formatCurrency(amount) {

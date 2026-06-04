@@ -38,7 +38,7 @@ if (form) {
                 }
             };
             
-            const response = await fetch('http://localhost:5000/api/sell/analyze', {
+            const response = await fetch('https://agri-price-backend-p4yw.onrender.com/api/sell/analyze', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(requestData)

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Analysis - Kisan Price Buddy</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    
+    <!-- Navigation -->
+    <nav class="bg-green-600 text-white p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="text-3xl">🌾</span>
+                <h1 class="text-2xl font-bold">Kisan Price Buddy</h1>
+            </div>
+            <div class="space-x-4">
+                <a href="index.html" class="hover:text-green-200">Home</a>
+                <a href="dashboard.html" class="hover:text-green-200">Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8" style="max-width: 800px;">
+        
+        <!-- Form Section -->
+        <div id="sellForm" class="bg-white rounded-xl shadow-2xl p-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">🌾 I Want to Sell My Produce</h2>
+            
+            <form id="analyzeForm">
+                <!-- Commodity -->
+                <div class="mb-6">
+                    <label class="block text-lg font-semibold mb-2">What do you want to sell?</label>
+                    <select id="commodity" class="input-field" required>
+                        <option value="">Select Crop</option>
+                        <option value="Wheat">🌾 Wheat</option>
+                        <option value="Rice">🌾 Rice</option>
+                        <option value="Maize">🌽 Maize</option>
+                        <option value="Cotton">🌿 Cotton</option>
+                        <option value="Potato">🥔 Potato</option>
+                        <option value="Onion">🧅 Onion</option>
+                        <option value="Tomato">🍅 Tomato</option>
+                        <option value="Bajra">Bajra</option>
+                        <option value="Jowar">Jowar</option>
+                        <option value="Soybean">Soybean</option>
+                    </select>
+                </div>
+
+                <!-- Quantity -->
+                <div class="mb-6">
+                    <label class="block text-lg font-semibold mb-2">How much quantity? (Quintals)</label>
+                    <input type="number" id="quantity" class="input-field" placeholder="e.g., 50" required min="1" step="0.1">
+                    <p class="text-sm text-gray-500 mt-1">1 Quintal = 100 kg</p>
+                </div>
+
+                <!-- Cost -->
+                <div class="mb-6">
+                    <label class="block text-lg font-semibold mb-2">Your cost per quintal (₹)</label>
+                    <input type="number" id="cost" class="input-field" placeholder="e.g., 1800" required min="0">
+                    <p class="text-sm text-gray-500 mt-1">Include seeds, fertilizer, labor, etc.</p>
+                </div>
+
+                <!-- State -->
+                <div class="mb-6">
+                    <label class="block text-lg font-semibold mb-2">Your State</label>
+                    <select id="state" class="input-field" required>
+                        <option value="">Select State</option>
+                        <option value="Punjab">Punjab</option>
+                        <option value="Haryana">Haryana</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    </select>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn-primary w-full text-xl py-4">
+                    🔍 Analyze & Find Best Price
+                </button>
+            </form>
+        </div>
+
+        <!-- Loading Section -->
+        <div id="loading" class="hidden bg-white rounded-xl shadow-2xl p-8 text-center">
+            <div class="spinner mx-auto mb-6"></div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">Analyzing Market Data...</h3>
+            <p class="text-gray-600">Please wait while we:</p>
+            <ul class="text-gray-600 mt-4 space-y-2">
+                <li>📊 Comparing prices across all markets</li>
+                <li>🤖 Running AI prediction models</li>
+                <li>💰 Calculating profit scenarios</li>
+                <li>📈 Analyzing price trends</li>
+            </ul>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results" class="hidden bg-white rounded-xl shadow-2xl p-8 mt-6">
+            <div id="resultsContent"></div>
+        </div>
+
+    </div>
+
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/sell.js"></script>
+    <script src="../assets/js/voice.js"></script>
+</body>
+</html>

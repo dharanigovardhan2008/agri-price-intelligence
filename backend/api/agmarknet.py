@@ -1,4 +1,6 @@
-﻿import requests
+﻿from urllib import response
+
+import requests
 from datetime import datetime, timedelta
 import random
 import os
@@ -27,6 +29,9 @@ class AgmarknetAPI:
                 params['filters[market]'] = market
 
             response = requests.get(self.BASE_URL, params=params, timeout=15)
+            print(f"API URL: {response.url}")
+            print(f"API Status: {response.status_code}")
+            print(f"API Response: {response.text[:500]}")   
             data = response.json()
 
             if data.get('status') == 'ok' and data.get('records'):
@@ -80,6 +85,12 @@ class AgmarknetAPI:
                 'filters[state]': state
             }
             response = requests.get(self.BASE_URL, params=params, timeout=15)
+            print(f"API URL: {response.url}")
+            print(f"API Status: {response.status_code}")
+            print(f"API Response: {response.text[:500]}")
+
+
+
             data = response.json()
             if data.get('status') == 'ok' and data.get('records'):
                 seen = set()

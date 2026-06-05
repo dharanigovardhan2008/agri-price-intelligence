@@ -34,6 +34,13 @@ def create_app():
     def health():
         return jsonify({'status': 'healthy'}), 200
     
+    @app.route('/debug')
+    def debug():
+        import os
+        return jsonify({
+            'DATA_GOV_API_KEY': os.getenv('DATA_GOV_API_KEY', 'NOT SET')[:10] + '...',
+            'has_key': bool(os.getenv('DATA_GOV_API_KEY'))
+    })
     # Error handlers
     @app.errorhandler(404)
     def not_found(error):

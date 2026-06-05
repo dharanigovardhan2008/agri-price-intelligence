@@ -1,306 +1,430 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kisan Price Buddy</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-    <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:system-ui,sans-serif;background:#F3F4F6;color:#1F2937}
-        .nav{background:#fff;border-bottom:1px solid #E5E7EB;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:10}
-        .nav-brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px}
-        .nav-icon{width:32px;height:32px;background:#1D9E75;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px}
-        .nav-tabs{display:flex;gap:4px}
-        .nav-tab{padding:6px 14px;border-radius:6px;font-size:13px;cursor:pointer;border:none;background:transparent;color:#6B7280;transition:all .15s}
-        .nav-tab.active{background:#F3F4F6;color:#1F2937;font-weight:600}
-        .nav-tab:hover:not(.active){background:#F9FAFB}
-        .page{display:none;padding:1.5rem;max-width:900px;margin:0 auto}
-        .page.active{display:block}
-        .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:1.5rem}
-        .stat-card{background:#fff;border-radius:10px;padding:1rem;border:1px solid #E5E7EB}
-        .stat-label{font-size:12px;color:#6B7280;margin-bottom:6px}
-        .stat-value{font-size:22px;font-weight:700}
-        .card{background:#fff;border:1px solid #E5E7EB;border-radius:12px;padding:1.25rem;margin-bottom:1rem}
-        .card-title{font-size:14px;font-weight:600;color:#6B7280;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
-        .price-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F3F4F6}
-        .price-row:last-child{border-bottom:none}
-        .badge{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600}
-        .badge-up{background:#D1FAE5;color:#065F46}
-        .badge-down{background:#FEE2E2;color:#991B1B}
-        .badge-neutral{background:#F3F4F6;color:#6B7280}
-        .form-label{font-size:13px;color:#374151;margin-bottom:6px;display:block;font-weight:500}
-        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem}
-        select,input[type=number],input[type=text]{width:100%;padding:9px 12px;border-radius:8px;border:1px solid #D1D5DB;background:#fff;color:#1F2937;font-size:14px}
-        .btn-primary{background:#1D9E75;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
-        .btn-primary:hover{background:#0F6E56}
-        .btn-secondary{background:#fff;color:#374151;border:1px solid #D1D5DB;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer}
-        .result-sell{background:#ECFDF5;border:1px solid #6EE7B7;border-radius:12px;padding:1.25rem;margin-top:1rem}
-        .market-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F3F4F6}
-        .market-item:last-child{border-bottom:none}
-        .rank{width:24px;height:24px;border-radius:50%;background:#F3F4F6;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;margin-right:10px}
-        .alert-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-        .progress-bar{height:4px;background:#F3F4F6;border-radius:2px;margin-top:6px}
-        .progress-fill{height:100%;border-radius:2px}
-        .two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-        .api-status{font-size:11px;padding:3px 8px;border-radius:20px;background:#D1FAE5;color:#065F46;font-weight:600}
-        .api-status.offline{background:#FEE2E2;color:#991B1B}
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kisan Price Buddy</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,sans-serif;background:#F3F4F6;color:#1F2937}
+.nav{background:#fff;border-bottom:1px solid #E5E7EB;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:10;flex-wrap:wrap;gap:8px}
+.nav-brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px}
+.nav-icon{width:32px;height:32px;background:#1D9E75;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px}
+.nav-tabs{display:flex;gap:4px;flex-wrap:wrap}
+.nav-tab{padding:6px 12px;border-radius:6px;font-size:13px;cursor:pointer;border:none;background:transparent;color:#6B7280}
+.nav-tab.active{background:#F3F4F6;color:#1F2937;font-weight:600}
+.page{display:none;padding:1.5rem;max-width:960px;margin:0 auto}
+.page.active{display:block}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:1.5rem}
+.stat-card{background:#fff;border-radius:10px;padding:1rem;border:1px solid #E5E7EB}
+.stat-label{font-size:12px;color:#6B7280;margin-bottom:6px}
+.stat-value{font-size:20px;font-weight:700}
+.card{background:#fff;border:1px solid #E5E7EB;border-radius:12px;padding:1.25rem;margin-bottom:1rem}
+.card-title{font-size:14px;font-weight:600;color:#6B7280;margin-bottom:1rem}
+.price-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #F3F4F6}
+.price-row:last-child{border-bottom:none}
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-up{background:#D1FAE5;color:#065F46}
+.badge-down{background:#FEE2E2;color:#991B1B}
+.badge-neutral{background:#F3F4F6;color:#6B7280}
+.form-label{font-size:13px;color:#374151;margin-bottom:6px;display:block;font-weight:500}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem}
+select,input[type=number],input[type=text]{width:100%;padding:9px 12px;border-radius:8px;border:1px solid #D1D5DB;background:#fff;color:#1F2937;font-size:14px}
+.btn-primary{background:#1D9E75;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+.btn-primary:hover{background:#0F6E56}
+.btn-secondary{background:#fff;color:#374151;border:1px solid #D1D5DB;padding:10px 20px;border-radius:8px;font-size:14px;cursor:pointer}
+.market-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F3F4F6}
+.market-item:last-child{border-bottom:none}
+.rank{width:24px;height:24px;border-radius:50%;background:#F3F4F6;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;margin-right:10px;flex-shrink:0}
+.loading{text-align:center;padding:2rem;color:#6B7280;font-size:14px}
+.spinner{display:inline-block;width:20px;height:20px;border:2px solid #E5E7EB;border-top-color:#1D9E75;border-radius:50%;animation:spin .8s linear infinite;margin-right:8px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+.api-badge{font-size:11px;padding:3px 8px;border-radius:20px;font-weight:600}
+.api-live{background:#D1FAE5;color:#065F46}
+.api-offline{background:#FEE2E2;color:#991B1B}
+.filter-bar{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
+.filter-bar select{width:auto;padding:6px 10px;font-size:13px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:600px){.two-col{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 
 <div class="nav">
-    <div class="nav-brand">
-        <div class="nav-icon">🌿</div>
-        Kisan Price Buddy
-    </div>
-    <div class="nav-tabs">
-        <button class="nav-tab active" onclick="showPage('dashboard',this)">📊 Dashboard</button>
-        <button class="nav-tab" onclick="showPage('sell',this)">💰 Sell Analysis</button>
-        <button class="nav-tab" onclick="showPage('alerts',this)">🔔 Alerts</button>
-        <button class="nav-tab" onclick="showPage('markets',this)">🏪 Markets</button>
-    </div>
-    <span class="api-status" id="apiStatus">Checking API...</span>
+  <div class="nav-brand"><div class="nav-icon">🌿</div>Kisan Price Buddy</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('dashboard',this)">📊 Dashboard</button>
+    <button class="nav-tab" onclick="showPage('sell',this)">💰 Sell</button>
+    <button class="nav-tab" onclick="showPage('alerts',this)">🔔 Alerts</button>
+    <button class="nav-tab" onclick="showPage('markets',this)">🏪 Markets</button>
+  </div>
+  <span class="api-badge api-offline" id="apiStatus">Connecting...</span>
 </div>
 
 <div id="dashboard" class="page active">
-    <div class="stat-grid">
-        <div class="stat-card">
-            <div class="stat-label">🌾 Top Crop Price</div>
-            <div class="stat-value" style="color:#065F46" id="topPrice">Loading...</div>
-            <div style="font-size:12px;color:#059669;margin-top:4px">Live from API</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-label">🏪 Active Markets</div>
-            <div class="stat-value">24</div>
-            <div style="font-size:12px;color:#6B7280;margin-top:4px">Tamil Nadu region</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-label">🔔 Price Alerts</div>
-            <div class="stat-value" style="color:#D97706">3</div>
-            <div style="font-size:12px;color:#D97706;margin-top:4px">2 above target</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-label">📈 Best Profit Est.</div>
-            <div class="stat-value" style="color:#065F46">₹18,240</div>
-            <div style="font-size:12px;color:#059669;margin-top:4px">Tomato · Chennai</div>
-        </div>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-label">📦 Total Records</div><div class="stat-value" id="totalRecords">—</div><div style="font-size:11px;color:#6B7280;margin-top:4px">Today</div></div>
+    <div class="stat-card"><div class="stat-label">🏪 Markets</div><div class="stat-value" id="totalMarkets">—</div><div style="font-size:11px;color:#6B7280;margin-top:4px" id="statState">Loading...</div></div>
+    <div class="stat-card"><div class="stat-label">🌾 Commodities</div><div class="stat-value" id="totalCommodities">—</div><div style="font-size:11px;color:#6B7280;margin-top:4px">Available</div></div>
+    <div class="stat-card"><div class="stat-label">💰 Highest Price</div><div class="stat-value" id="highestPrice" style="color:#065F46">—</div><div style="font-size:11px;color:#6B7280;margin-top:4px" id="highestCrop">—</div></div>
+  </div>
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px">
+      <div class="card-title" style="margin:0">📈 Live Mandi Prices</div>
+      <div class="filter-bar" style="margin:0">
+        <select id="filterState" onchange="loadPrices()"><option value="">All States</option></select>
+        <select id="filterCommodity" onchange="loadPrices()"><option value="">All Commodities</option></select>
+      </div>
     </div>
-
-    <div class="two-col">
-        <div class="card">
-            <div class="card-title">📈 Live Prices</div>
-            <div class="price-row">
-                <div><div style="font-size:14px;font-weight:600">Tomato</div><div style="font-size:12px;color:#6B7280">Chennai APMC</div></div>
-                <div style="text-align:right"><div style="font-weight:600">₹2,840/q</div><span class="badge badge-up">▲ 4.2%</span></div>
-            </div>
-            <div class="price-row">
-                <div><div style="font-size:14px;font-weight:600">Onion</div><div style="font-size:12px;color:#6B7280">Madurai Market</div></div>
-                <div style="text-align:right"><div style="font-weight:600">₹1,560/q</div><span class="badge badge-down">▼ 1.8%</span></div>
-            </div>
-            <div class="price-row">
-                <div><div style="font-size:14px;font-weight:600">Rice (Ponni)</div><div style="font-size:12px;color:#6B7280">Thanjavur</div></div>
-                <div style="text-align:right"><div style="font-weight:600">₹3,200/q</div><span class="badge badge-up">▲ 2.1%</span></div>
-            </div>
-            <div class="price-row">
-                <div><div style="font-size:14px;font-weight:600">Groundnut</div><div style="font-size:12px;color:#6B7280">Vellore Market</div></div>
-                <div style="text-align:right"><div style="font-weight:600">₹5,420/q</div><span class="badge badge-neutral">— 0.0%</span></div>
-            </div>
-            <div class="price-row">
-                <div><div style="font-size:14px;font-weight:600">Banana</div><div style="font-size:12px;color:#6B7280">Trichy APMC</div></div>
-                <div style="text-align:right"><div style="font-weight:600">₹1,890/q</div><span class="badge badge-down">▼ 0.9%</span></div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-title">📉 7-Day Trend — Tomato</div>
-            <canvas id="trendChart" width="320" height="180"></canvas>
-            <div style="display:flex;justify-content:space-between;font-size:11px;color:#9CA3AF;margin-top:6px"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-title">📍 Nearest Markets</div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-            <div style="padding:12px;background:#F9FAFB;border-radius:8px">
-                <div style="font-size:13px;font-weight:600">Chennai APMC</div>
-                <div style="font-size:12px;color:#6B7280;margin-top:2px">12 km away</div>
-                <div class="progress-bar"><div class="progress-fill" style="width:90%;background:#1D9E75"></div></div>
-                <div style="font-size:11px;color:#059669;margin-top:4px">Best prices today</div>
-            </div>
-            <div style="padding:12px;background:#F9FAFB;border-radius:8px">
-                <div style="font-size:13px;font-weight:600">Koyambedu</div>
-                <div style="font-size:12px;color:#6B7280;margin-top:2px">18 km away</div>
-                <div class="progress-bar"><div class="progress-fill" style="width:74%;background:#1D9E75"></div></div>
-                <div style="font-size:11px;color:#6B7280;margin-top:4px">Good volume</div>
-            </div>
-            <div style="padding:12px;background:#F9FAFB;border-radius:8px">
-                <div style="font-size:13px;font-weight:600">Ambattur Mandi</div>
-                <div style="font-size:12px;color:#6B7280;margin-top:2px">24 km away</div>
-                <div class="progress-bar"><div class="progress-fill" style="width:58%;background:#F59E0B"></div></div>
-                <div style="font-size:11px;color:#6B7280;margin-top:4px">Average prices</div>
-            </div>
-        </div>
-    </div>
+    <div id="pricesList"><div class="loading"><span class="spinner"></span>Loading live prices...</div></div>
+  </div>
 </div>
 
 <div id="sell" class="page">
-    <div class="card">
-        <div class="card-title">🧮 Sell Analysis</div>
-        <div class="form-row">
-            <div><label class="form-label">Crop / Commodity</label><select id="s-crop"><option>Tomato</option><option>Onion</option><option>Rice (Ponni)</option><option>Groundnut</option><option>Banana</option></select></div>
-            <div><label class="form-label">State</label><select id="s-state"><option>Tamil Nadu</option><option>Karnataka</option><option>Andhra Pradesh</option><option>Kerala</option></select></div>
-        </div>
-        <div class="form-row">
-            <div><label class="form-label">Quantity (quintals)</label><input type="number" id="s-qty" value="10" min="1"></div>
-            <div><label class="form-label">Your cost per quintal (₹)</label><input type="number" id="s-cost" value="1800" min="0"></div>
-        </div>
-        <button class="btn-primary" onclick="runAnalysis()">🔍 Analyze Best Market</button>
+  <div class="card">
+    <div class="card-title">🧮 Sell Analysis</div>
+    <div class="form-row">
+      <div><label class="form-label">Crop</label><select id="s-crop"><option>Select crop</option></select></div>
+      <div><label class="form-label">State</label><select id="s-state"><option>Select state</option></select></div>
     </div>
-
-    <div id="sell-result" style="display:none">
-        <div class="result-sell">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-                <div><div style="font-size:18px;font-weight:700;color:#065F46">✅ Sell Now — Chennai APMC</div><div style="font-size:13px;color:#6B7280;margin-top:4px">92% confidence · 12 km away</div></div>
-                <div style="text-align:right"><div style="font-size:24px;font-weight:700;color:#065F46">₹9,352</div><div style="font-size:12px;color:#059669">net profit</div></div>
-            </div>
-        </div>
-        <div class="card" style="margin-top:1rem">
-            <div class="card-title">💰 Profit Breakdown</div>
-            <div class="price-row"><span style="color:#6B7280">Selling price</span><span style="font-weight:600">₹28,400</span></div>
-            <div class="price-row"><span style="color:#6B7280">Your cost</span><span style="font-weight:600;color:#DC2626">−₹18,000</span></div>
-            <div class="price-row"><span style="color:#6B7280">Transport</span><span style="font-weight:600;color:#DC2626">−₹480</span></div>
-            <div class="price-row"><span style="color:#6B7280">Commission (2%)</span><span style="font-weight:600;color:#DC2626">−₹568</span></div>
-            <div class="price-row" style="border:none"><span style="font-weight:700;font-size:15px">Net Profit</span><span style="font-weight:700;font-size:18px;color:#065F46">₹9,352</span></div>
-        </div>
-        <div class="card">
-            <div class="card-title">🏪 Market Options</div>
-            <div class="market-item"><div style="display:flex;align-items:center"><div class="rank">1</div><div><div style="font-weight:600;font-size:14px">Chennai APMC</div><div style="font-size:12px;color:#6B7280">12 km · ₹2,840/q</div></div></div><div style="text-align:right"><div style="font-weight:700;color:#065F46">₹9,352</div><div style="font-size:12px;color:#6B7280">57.8% margin</div></div></div>
-            <div class="market-item"><div style="display:flex;align-items:center"><div class="rank">2</div><div><div style="font-weight:600;font-size:14px">Koyambedu</div><div style="font-size:12px;color:#6B7280">18 km · ₹2,760/q</div></div></div><div style="text-align:right"><div style="font-weight:700;color:#065F46">₹8,640</div><div style="font-size:12px;color:#6B7280">54.2% margin</div></div></div>
-            <div class="market-item"><div style="display:flex;align-items:center"><div class="rank">3</div><div><div style="font-weight:600;font-size:14px">Ambattur Mandi</div><div style="font-size:12px;color:#6B7280">24 km · ₹2,620/q</div></div></div><div style="text-align:right"><div style="font-weight:700;color:#065F46">₹7,200</div><div style="font-size:12px;color:#6B7280">48.6% margin</div></div></div>
-        </div>
-        <div style="display:flex;gap:1rem;margin-top:1rem">
-            <button class="btn-primary" onclick="document.getElementById('sell-result').style.display='none'">🔄 New Analysis</button>
-            <button class="btn-secondary" onclick="window.print()">🖨️ Print Report</button>
-        </div>
+    <div class="form-row">
+      <div><label class="form-label">Quantity (quintals)</label><input type="number" id="s-qty" value="10" min="1"></div>
+      <div><label class="form-label">Your cost per quintal (Rs.)</label><input type="number" id="s-cost" value="1800" min="0"></div>
     </div>
+    <button class="btn-primary" onclick="runAnalysis()">🔍 Analyze Best Market</button>
+  </div>
+  <div id="sell-result" style="display:none"></div>
 </div>
 
 <div id="alerts" class="page">
-    <div class="card">
-        <div class="card-title">🔔 Set Price Alert</div>
-        <div class="form-row">
-            <div><label class="form-label">Crop</label><select><option>Tomato</option><option>Onion</option><option>Rice</option></select></div>
-            <div><label class="form-label">Alert when price goes above (₹/q)</label><input type="number" value="3000"></div>
-        </div>
-        <button class="btn-primary">➕ Add Alert</button>
+  <div class="card">
+    <div class="card-title">🔔 Set Price Alert</div>
+    <div class="form-row">
+      <div><label class="form-label">Crop</label><select id="a-crop"><option>Select crop</option></select></div>
+      <div><label class="form-label">Condition</label><select id="a-condition"><option value="above">Above price</option><option value="below">Below price</option></select></div>
     </div>
-    <div class="card">
-        <div class="card-title">📋 Active Alerts</div>
-        <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #F3F4F6">
-            <div class="alert-dot" style="background:#1D9E75"></div>
-            <div style="flex:1"><div style="font-size:14px;font-weight:600">Tomato · above ₹3,000/q</div><div style="font-size:12px;color:#6B7280;margin-top:2px">Currently ₹2,840 · 5.6% away</div></div>
-            <button class="btn-secondary" style="padding:5px 10px;font-size:12px">🗑️</button>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #F3F4F6">
-            <div class="alert-dot" style="background:#F59E0B"></div>
-            <div style="flex:1"><div style="font-size:14px;font-weight:600">Groundnut · above ₹5,000/q</div><div style="font-size:12px;color:#D97706;margin-top:2px">Currently ₹5,420 · ⚠️ Alert triggered!</div></div>
-            <button class="btn-secondary" style="padding:5px 10px;font-size:12px">🗑️</button>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;padding:12px 0">
-            <div class="alert-dot" style="background:#EF4444"></div>
-            <div style="flex:1"><div style="font-size:14px;font-weight:600">Onion · below ₹1,200/q</div><div style="font-size:12px;color:#6B7280;margin-top:2px">Currently ₹1,560 · Safe</div></div>
-            <button class="btn-secondary" style="padding:5px 10px;font-size:12px">🗑️</button>
-        </div>
+    <div class="form-row">
+      <div><label class="form-label">Target Price (Rs./quintal)</label><input type="number" id="a-price" value="3000"></div>
+      <div><label class="form-label">State</label><select id="a-state"><option>Select state</option></select></div>
     </div>
+    <button class="btn-primary" onclick="addAlert()">Add Alert</button>
+  </div>
+  <div class="card">
+    <div class="card-title">📋 Active Alerts</div>
+    <div id="alertsList"><div style="color:#6B7280;font-size:14px;text-align:center;padding:1rem">No alerts yet.</div></div>
+  </div>
 </div>
 
 <div id="markets" class="page">
-    <div class="card">
-        <div class="card-title">🔍 Find Markets</div>
-        <input type="text" placeholder="Search by market name or district..." style="margin-bottom:1rem">
-        <div class="market-item">
-            <div style="display:flex;align-items:center;gap:12px">
-                <div style="width:36px;height:36px;border-radius:8px;background:#D1FAE5;display:flex;align-items:center;justify-content:center;font-size:18px">🏪</div>
-                <div><div style="font-weight:600;font-size:14px">Chennai APMC</div><div style="font-size:12px;color:#6B7280">Koyambedu, Chennai · 12 km</div></div>
-            </div>
-            <div style="text-align:right"><span class="badge badge-up">Best today</span><div style="font-size:12px;color:#6B7280;margin-top:4px">Open 5am–2pm</div></div>
-        </div>
-        <div class="market-item">
-            <div style="display:flex;align-items:center;gap:12px">
-                <div style="width:36px;height:36px;border-radius:8px;background:#F3F4F6;display:flex;align-items:center;justify-content:center;font-size:18px">🏪</div>
-                <div><div style="font-weight:600;font-size:14px">Koyambedu Wholesale</div><div style="font-size:12px;color:#6B7280">Koyambedu · 18 km</div></div>
-            </div>
-            <div style="text-align:right"><span class="badge badge-neutral">Good</span><div style="font-size:12px;color:#6B7280;margin-top:4px">Open 4am–12pm</div></div>
-        </div>
-        <div class="market-item">
-            <div style="display:flex;align-items:center;gap:12px">
-                <div style="width:36px;height:36px;border-radius:8px;background:#F3F4F6;display:flex;align-items:center;justify-content:center;font-size:18px">🏪</div>
-                <div><div style="font-weight:600;font-size:14px">Thanjavur Mandi</div><div style="font-size:12px;color:#6B7280">Thanjavur · 312 km</div></div>
-            </div>
-            <div style="text-align:right"><span class="badge badge-up">Rice specialist</span><div style="font-size:12px;color:#6B7280;margin-top:4px">Open 5am–1pm</div></div>
-        </div>
+  <div class="card">
+    <div class="card-title">🏪 Markets Directory</div>
+    <div class="filter-bar">
+      <select id="m-state" onchange="loadMarkets()"><option value="">Select State</option></select>
+      <input type="text" id="m-search" placeholder="Search market..." style="width:auto;flex:1" oninput="filterMarkets()">
     </div>
+    <div id="marketsList"><div class="loading">Select a state to see markets</div></div>
+  </div>
 </div>
 
 <script>
-const API = 'https://agri-price-backend-p4yw.onrender.com';
+var API = 'https://agri-price-backend-p4yw.onrender.com';
+var allPrices = [];
+var allMarkets = [];
+var alerts = JSON.parse(localStorage.getItem('kisanAlerts') || '[]');
 
-async function checkAPI(){
-    try{
-        const r = await fetch(API+'/health');
-        if(r.ok){
-            document.getElementById('apiStatus').textContent='API Live';
-            document.getElementById('apiStatus').className='api-status';
-            document.getElementById('topPrice').textContent='₹2,840/q';
-        }
-    }catch(e){
-        document.getElementById('apiStatus').textContent='API Offline';
-        document.getElementById('apiStatus').className='api-status offline';
+function init() {
+  checkAPI();
+  loadStates();
+  loadCommodities();
+  loadPrices();
+  renderAlerts();
+}
+
+function checkAPI() {
+  fetch(API + '/health').then(function(r) {
+    if (r.ok) {
+      document.getElementById('apiStatus').textContent = 'API Live';
+      document.getElementById('apiStatus').className = 'api-badge api-live';
     }
+  }).catch(function() {
+    document.getElementById('apiStatus').textContent = 'Offline';
+    document.getElementById('apiStatus').className = 'api-badge api-offline';
+  });
 }
 
-function showPage(id,btn){
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-    document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    btn.classList.add('active');
+function populateSelect(id, items, defaultLabel) {
+  var sel = document.getElementById(id);
+  sel.innerHTML = '<option value="">' + defaultLabel + '</option>';
+  items.forEach(function(item) {
+    var o = document.createElement('option');
+    o.value = item; o.textContent = item;
+    if (item === 'Tamil Nadu') o.selected = true;
+    sel.appendChild(o);
+  });
 }
 
-function runAnalysis(){
-    document.getElementById('sell-result').style.display='block';
-    document.getElementById('sell-result').scrollIntoView({behavior:'smooth'});
+function loadStates() {
+  fetch(API + '/api/prices/states').then(function(r){ return r.json(); }).then(function(data) {
+    if (data.success) {
+      populateSelect('filterState', data.states, 'All States');
+      populateSelect('s-state', data.states, 'Select state');
+      populateSelect('a-state', data.states, 'Select state');
+      populateSelect('m-state', data.states, 'Select State');
+    }
+  }).catch(function(e){ console.error(e); });
 }
 
-function drawChart(){
-    const canvas=document.getElementById('trendChart');
-    if(!canvas)return;
-    const ctx=canvas.getContext('2d');
-    const w=canvas.width,h=canvas.height,pad=30;
-    const prices=[2100,2340,2180,2560,2480,2720,2840];
-    ctx.clearRect(0,0,w,h);
-    const min=Math.min(...prices)-200,max=Math.max(...prices)+200;
-    const range=max-min,cw=w-pad*2,ch=h-pad*2;
-    const xStep=cw/(prices.length-1);
-    const yScale=ch/range;
-    const grad=ctx.createLinearGradient(0,pad,0,h-pad);
-    grad.addColorStop(0,'rgba(29,158,117,0.2)');
-    grad.addColorStop(1,'rgba(29,158,117,0)');
-    ctx.beginPath();
-    prices.forEach((v,i)=>{const x=pad+i*xStep,y=h-pad-(v-min)*yScale;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
-    ctx.lineTo(pad+(prices.length-1)*xStep,h-pad);ctx.lineTo(pad,h-pad);ctx.closePath();
-    ctx.fillStyle=grad;ctx.fill();
-    ctx.beginPath();ctx.strokeStyle='#1D9E75';ctx.lineWidth=2.5;
-    prices.forEach((v,i)=>{const x=pad+i*xStep,y=h-pad-(v-min)*yScale;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
-    ctx.stroke();
-    prices.forEach((v,i)=>{
-        const x=pad+i*xStep,y=h-pad-(v-min)*yScale;
-        ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fillStyle='#1D9E75';ctx.fill();
-        ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x,y,2,0,Math.PI*2);ctx.fill();
+function loadCommodities() {
+  fetch(API + '/api/prices/commodities').then(function(r){ return r.json(); }).then(function(data) {
+    if (data.success) {
+      populateSelect('filterCommodity', data.commodities, 'All Commodities');
+      populateSelect('s-crop', data.commodities, 'Select crop');
+      populateSelect('a-crop', data.commodities, 'Select crop');
+    }
+  }).catch(function(e){ console.error(e); });
+}
+
+function loadPrices() {
+  var state = document.getElementById('filterState').value;
+  var commodity = document.getElementById('filterCommodity').value;
+  document.getElementById('pricesList').innerHTML = '<div class="loading"><span class="spinner"></span>Fetching live prices...</div>';
+  var url = API + '/api/prices/current?';
+  if (state) url += 'state=' + encodeURIComponent(state) + '&';
+  if (commodity) url += 'commodity=' + encodeURIComponent(commodity);
+  fetch(url).then(function(r){ return r.json(); }).then(function(data) {
+    if (data.success && data.prices.length > 0) {
+      allPrices = data.prices;
+      renderPrices(data.prices);
+      updateStats(data.prices);
+    } else {
+      document.getElementById('pricesList').innerHTML = '<div class="loading">No data found. Try selecting a state.</div>';
+    }
+  }).catch(function() {
+    document.getElementById('pricesList').innerHTML = '<div class="loading">Error loading prices.</div>';
+  });
+}
+
+function renderPrices(prices) {
+  var html = prices.slice(0, 100).map(function(p) {
+    return '<div class="price-row">' +
+      '<div>' +
+        '<div style="font-size:14px;font-weight:600">' + p.commodity + '</div>' +
+        '<div style="font-size:12px;color:#6B7280">' + p.market + ' · ' + p.district + ', ' + p.state + '</div>' +
+        (p.variety ? '<div style="font-size:11px;color:#9CA3AF">' + p.variety + '</div>' : '') +
+      '</div>' +
+      '<div style="text-align:right">' +
+        '<div style="font-weight:700;font-size:15px">Rs.' + Number(p.price).toLocaleString('en-IN') + '/q</div>' +
+        '<div style="font-size:11px;color:#6B7280">Min: ' + Number(p.min_price||p.price).toLocaleString('en-IN') + ' · Max: ' + Number(p.max_price||p.price).toLocaleString('en-IN') + '</div>' +
+        '<div style="font-size:11px;color:#9CA3AF">' + p.date + '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+  document.getElementById('pricesList').innerHTML = html || '<div class="loading">No prices found</div>';
+}
+
+function updateStats(prices) {
+  var markets = new Set(prices.map(function(p){ return p.market; }));
+  var commodities = new Set(prices.map(function(p){ return p.commodity; }));
+  var highest = prices.reduce(function(a,b){ return a.price > b.price ? a : b; }, prices[0]);
+  document.getElementById('totalRecords').textContent = prices.length;
+  document.getElementById('totalMarkets').textContent = markets.size;
+  document.getElementById('totalCommodities').textContent = commodities.size;
+  document.getElementById('highestPrice').textContent = 'Rs.' + Number(highest.price).toLocaleString('en-IN');
+  document.getElementById('highestCrop').textContent = highest.commodity + ' · ' + highest.market;
+}
+
+function runAnalysis() {
+  var crop = document.getElementById('s-crop').value;
+  var state = document.getElementById('s-state').value;
+  var qty = parseFloat(document.getElementById('s-qty').value) || 10;
+  var cost = parseFloat(document.getElementById('s-cost').value) || 1800;
+  var resultDiv = document.getElementById('sell-result');
+  if (!crop || crop === 'Select crop') { alert('Please select a crop'); return; }
+  if (!state || state === 'Select state') { alert('Please select a state'); return; }
+  resultDiv.innerHTML = '<div class="loading"><span class="spinner"></span>Analyzing markets...</div>';
+  resultDiv.style.display = 'block';
+  fetch(API + '/api/prices/current?state=' + encodeURIComponent(state) + '&commodity=' + encodeURIComponent(crop))
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      if (data.success && data.prices.length > 0) {
+        var prices = data.prices.sort(function(a,b){ return b.price - a.price; });
+        var best = prices[0];
+        var revenue = best.price * qty;
+        var costTotal = cost * qty;
+        var transport = Math.round(qty * 50);
+        var commission = Math.round(revenue * 0.02);
+        var loading = qty * 10;
+        var netProfit = revenue - costTotal - transport - commission - loading;
+        var margin = ((netProfit / costTotal) * 100).toFixed(1);
+        var isProfit = netProfit > 0;
+        var dc = isProfit ? '#065F46' : '#92400E';
+        var db = isProfit ? '#ECFDF5' : '#FEF3C7';
+        var dbo = isProfit ? '#6EE7B7' : '#FCD34D';
+
+        var marketsHtml = prices.slice(0,10).map(function(p, i) {
+          var rev = p.price * qty;
+          var np = rev - costTotal - transport - Math.round(rev*0.02) - loading;
+          var npColor = np > 0 ? '#065F46' : '#DC2626';
+          var npMargin = ((np/costTotal)*100).toFixed(1);
+          return '<div class="market-item">' +
+            '<div style="display:flex;align-items:center">' +
+              '<div class="rank">' + (i+1) + '</div>' +
+              '<div><div style="font-weight:600;font-size:14px">' + p.market + '</div>' +
+              '<div style="font-size:12px;color:#6B7280">' + p.district + ' · Rs.' + Number(p.price).toLocaleString('en-IN') + '/q</div></div>' +
+            '</div>' +
+            '<div style="text-align:right">' +
+              '<div style="font-weight:700;color:' + npColor + '">Rs.' + Number(np).toLocaleString('en-IN') + '</div>' +
+              '<div style="font-size:12px;color:#6B7280">' + npMargin + '% margin</div>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+
+        resultDiv.innerHTML =
+          '<div style="background:' + db + ';border:1px solid ' + dbo + ';border-radius:12px;padding:1.25rem;margin-top:1rem">' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">' +
+              '<div>' +
+                '<div style="font-size:18px;font-weight:700;color:' + dc + '">' + (isProfit ? 'SELL NOW' : 'WAIT') + ' — ' + best.market + '</div>' +
+                '<div style="font-size:13px;color:#6B7280;margin-top:4px">' + best.district + ', ' + best.state + ' · Rs.' + Number(best.price).toLocaleString('en-IN') + '/quintal</div>' +
+              '</div>' +
+              '<div style="text-align:right">' +
+                '<div style="font-size:24px;font-weight:700;color:' + dc + '">Rs.' + Number(netProfit).toLocaleString('en-IN') + '</div>' +
+                '<div style="font-size:12px;color:#6B7280">net profit · ' + margin + '% margin</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="card" style="margin-top:1rem">' +
+            '<div class="card-title">Profit Breakdown</div>' +
+            '<div class="price-row"><span style="color:#6B7280">Selling price (' + qty + 'q x Rs.' + best.price + ')</span><span style="font-weight:600">Rs.' + Number(revenue).toLocaleString('en-IN') + '</span></div>' +
+            '<div class="price-row"><span style="color:#6B7280">Your cost</span><span style="font-weight:600;color:#DC2626">-Rs.' + Number(costTotal).toLocaleString('en-IN') + '</span></div>' +
+            '<div class="price-row"><span style="color:#6B7280">Transport (est.)</span><span style="font-weight:600;color:#DC2626">-Rs.' + Number(transport).toLocaleString('en-IN') + '</span></div>' +
+            '<div class="price-row"><span style="color:#6B7280">Commission 2%</span><span style="font-weight:600;color:#DC2626">-Rs.' + Number(commission).toLocaleString('en-IN') + '</span></div>' +
+            '<div class="price-row"><span style="color:#6B7280">Loading/Unloading</span><span style="font-weight:600;color:#DC2626">-Rs.' + Number(loading).toLocaleString('en-IN') + '</span></div>' +
+            '<div class="price-row" style="border:none"><span style="font-weight:700;font-size:15px">Net Profit</span><span style="font-weight:700;font-size:18px;color:' + dc + '">Rs.' + Number(netProfit).toLocaleString('en-IN') + '</span></div>' +
+          '</div>' +
+          '<div class="card">' +
+            '<div class="card-title">All Markets for ' + crop + ' in ' + state + '</div>' +
+            marketsHtml +
+          '</div>' +
+          '<div style="display:flex;gap:1rem;margin-top:1rem">' +
+            '<button class="btn-primary" onclick="document.getElementById(\'sell-result\').style.display=\'none\'">New Analysis</button>' +
+            '<button class="btn-secondary" onclick="window.print()">Print Report</button>' +
+          '</div>';
+      } else {
+        resultDiv.innerHTML = '<div class="card" style="color:#DC2626;text-align:center;padding:2rem">No market data found for ' + crop + ' in ' + state + '. Try another combination.</div>';
+      }
+    }).catch(function(e) {
+      resultDiv.innerHTML = '<div class="card" style="color:#DC2626">Error: ' + e.message + '</div>';
     });
 }
 
-checkAPI();
-drawChart();
+function loadMarkets() {
+  var state = document.getElementById('m-state').value;
+  if (!state) return;
+  document.getElementById('marketsList').innerHTML = '<div class="loading"><span class="spinner"></span>Loading markets...</div>';
+  fetch(API + '/api/prices/current?state=' + encodeURIComponent(state))
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      if (data.success && data.prices.length > 0) {
+        var seen = {};
+        allMarkets = data.prices.filter(function(p) {
+          if (seen[p.market]) return false;
+          seen[p.market] = true; return true;
+        });
+        renderMarkets(allMarkets);
+      } else {
+        document.getElementById('marketsList').innerHTML = '<div class="loading">No markets found for ' + state + '</div>';
+      }
+    }).catch(function() {
+      document.getElementById('marketsList').innerHTML = '<div class="loading">Error loading markets</div>';
+    });
+}
+
+function filterMarkets() {
+  var q = document.getElementById('m-search').value.toLowerCase();
+  var filtered = allMarkets.filter(function(m) {
+    return m.market.toLowerCase().indexOf(q) !== -1 || m.district.toLowerCase().indexOf(q) !== -1;
+  });
+  renderMarkets(filtered);
+}
+
+function renderMarkets(markets) {
+  var html = markets.map(function(m) {
+    return '<div class="market-item">' +
+      '<div style="display:flex;align-items:center;gap:12px">' +
+        '<div style="width:36px;height:36px;border-radius:8px;background:#D1FAE5;display:flex;align-items:center;justify-content:center;font-size:18px">🏪</div>' +
+        '<div><div style="font-weight:600;font-size:14px">' + m.market + '</div><div style="font-size:12px;color:#6B7280">' + m.district + '</div></div>' +
+      '</div>' +
+      '<div style="text-align:right">' +
+        '<div style="font-weight:600;font-size:14px">Rs.' + Number(m.price).toLocaleString('en-IN') + '/q</div>' +
+        '<div style="font-size:12px;color:#6B7280">' + m.commodity + '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+  document.getElementById('marketsList').innerHTML = html || '<div class="loading">No markets found</div>';
+}
+
+function addAlert() {
+  var crop = document.getElementById('a-crop').value;
+  var condition = document.getElementById('a-condition').value;
+  var price = parseFloat(document.getElementById('a-price').value);
+  var state = document.getElementById('a-state').value;
+  if (!crop || crop === 'Select crop' || !price || !state || state === 'Select state') {
+    alert('Please fill all fields'); return;
+  }
+  alerts.push({ id: Date.now(), crop: crop, condition: condition, price: price, state: state, triggered: false });
+  localStorage.setItem('kisanAlerts', JSON.stringify(alerts));
+  renderAlerts();
+  checkAlerts();
+}
+
+function removeAlert(id) {
+  alerts = alerts.filter(function(a){ return a.id !== id; });
+  localStorage.setItem('kisanAlerts', JSON.stringify(alerts));
+  renderAlerts();
+}
+
+function renderAlerts() {
+  if (!alerts.length) {
+    document.getElementById('alertsList').innerHTML = '<div style="color:#6B7280;font-size:14px;text-align:center;padding:1rem">No alerts yet.</div>';
+    return;
+  }
+  document.getElementById('alertsList').innerHTML = alerts.map(function(a) {
+    return '<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #F3F4F6">' +
+      '<div style="width:8px;height:8px;border-radius:50%;background:' + (a.triggered ? '#F59E0B' : '#1D9E75') + ';flex-shrink:0"></div>' +
+      '<div style="flex:1">' +
+        '<div style="font-size:14px;font-weight:600">' + a.crop + ' · ' + a.condition + ' Rs.' + Number(a.price).toLocaleString('en-IN') + '/q</div>' +
+        '<div style="font-size:12px;color:#6B7280">' + a.state + (a.triggered ? ' — TRIGGERED!' : ' · Watching') + '</div>' +
+      '</div>' +
+      '<button onclick="removeAlert(' + a.id + ')" style="background:none;border:1px solid #E5E7EB;border-radius:6px;padding:4px 8px;cursor:pointer;font-size:12px">Remove</button>' +
+    '</div>';
+  }).join('');
+}
+
+function checkAlerts() {
+  alerts.forEach(function(a) {
+    fetch(API + '/api/prices/current?commodity=' + encodeURIComponent(a.crop) + '&state=' + encodeURIComponent(a.state))
+      .then(function(r){ return r.json(); })
+      .then(function(data) {
+        if (data.success && data.prices.length > 0) {
+          var maxP = Math.max.apply(null, data.prices.map(function(p){ return p.price; }));
+          var minP = Math.min.apply(null, data.prices.map(function(p){ return p.price; }));
+          if (a.condition === 'above' && maxP >= a.price) a.triggered = true;
+          if (a.condition === 'below' && minP <= a.price) a.triggered = true;
+          localStorage.setItem('kisanAlerts', JSON.stringify(alerts));
+          renderAlerts();
+        }
+      }).catch(function(){});
+  });
+}
+
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.nav-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+init();
 </script>
 </body>
 </html>

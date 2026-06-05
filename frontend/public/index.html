@@ -138,6 +138,7 @@ function init() {
   loadCommodities();
   loadPrices();
   renderAlerts();
+  setTimeout(function() { loadPrices(); }, 1500);
 }
 
 function checkAPI() {
@@ -185,7 +186,7 @@ function loadCommodities() {
 }
 
 function loadPrices() {
-  var state = document.getElementById('filterState').value;
+  var state = document.getElementById('filterState').value || 'Tamil Nadu';
   var commodity = document.getElementById('filterCommodity').value;
   document.getElementById('pricesList').innerHTML = '<div class="loading"><span class="spinner"></span>Fetching live prices...</div>';
   var url = API + '/api/prices/current?';

@@ -4,163 +4,352 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kisan Price Buddy</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
+:root{
+  --green:#2ecc8f;
+  --green-dark:#1a9e6a;
+  --green-light:rgba(46,204,143,0.15);
+  --glass:rgba(255,255,255,0.08);
+  --glass-border:rgba(255,255,255,0.12);
+  --glass-hover:rgba(255,255,255,0.12);
+  --text:rgba(255,255,255,0.9);
+  --text-muted:rgba(255,255,255,0.45);
+  --text-dim:rgba(255,255,255,0.25);
+  --red:rgba(231,76,60,0.9);
+  --red-glass:rgba(231,76,60,0.15);
+  --amber:#f39c12;
+}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:system-ui,sans-serif;min-height:100vh;background:linear-gradient(135deg,#0a4f3c 0%,#1a7a5c 40%,#0d6b4a 70%,#083d2e 100%);background-attachment:fixed}
-.orb1{position:fixed;width:400px;height:400px;border-radius:50%;background:rgba(255,255,255,0.04);top:-100px;right:-80px;pointer-events:none;z-index:0}
-.orb2{position:fixed;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,0.03);bottom:80px;left:-60px;pointer-events:none;z-index:0}
-.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:rgba(255,255,255,0.08);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.12);position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:10px}
-.brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:700;font-size:16px}
-.brand-icon{width:34px;height:34px;background:linear-gradient(135deg,#2ecc8f,#1a9e6a);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
-.nav-tabs{display:flex;gap:4px;background:rgba(0,0,0,0.25);border-radius:50px;padding:4px}
-.nav-tab{padding:7px 16px;border-radius:50px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.55);cursor:pointer;border:none;background:transparent;transition:all .2s}
-.nav-tab.active{background:rgba(255,255,255,0.15);color:#fff;backdrop-filter:blur(10px)}
-.nav-tab:hover:not(.active){color:rgba(255,255,255,0.8)}
-.live-badge{background:rgba(46,204,143,0.2);border:1px solid rgba(46,204,143,0.4);color:#2ecc8f;font-size:11px;font-weight:700;padding:6px 14px;border-radius:50px;display:flex;align-items:center;gap:6px}
-.live-dot{width:6px;height:6px;border-radius:50%;background:#2ecc8f;animation:pulse 1.5s infinite}
-.offline-badge{background:rgba(231,76,60,0.2);border:1px solid rgba(231,76,60,0.4);color:#ff6b6b;font-size:11px;font-weight:700;padding:6px 14px;border-radius:50px}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.page{display:none;padding:20px 24px;max-width:960px;margin:0 auto;position:relative;z-index:1}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;min-height:100vh;background:#071f17;color:var(--text);overflow-x:hidden}
+/* Background */
+.bg{position:fixed;inset:0;z-index:0;background:linear-gradient(135deg,#071f17 0%,#0d3526 35%,#0a2e20 65%,#071f17 100%)}
+.bg::before{content:'';position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(46,204,143,0.12) 0%,transparent 70%);top:-200px;right:-150px}
+.bg::after{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(46,204,143,0.08) 0%,transparent 70%);bottom:-100px;left:-100px}
+.bg-mid{position:fixed;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(46,204,143,0.06) 0%,transparent 70%);top:40%;left:50%;transform:translateX(-50%);pointer-events:none;z-index:0}
+/* Layout */
+.app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
+/* Nav */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:60px;background:rgba(7,31,23,0.8);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--glass-border);position:sticky;top:0;z-index:100;flex-wrap:nowrap;gap:12px}
+.brand{display:flex;align-items:center;gap:11px;color:#fff;font-weight:700;font-size:15px;letter-spacing:-0.02em;flex-shrink:0}
+.brand-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--green),var(--green-dark));border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 4px 15px rgba(46,204,143,0.35)}
+.brand-icon i{font-size:18px}
+.nav-center{display:flex;gap:2px;background:rgba(0,0,0,0.3);border-radius:50px;padding:4px}
+.nav-tab{padding:7px 18px;border-radius:50px;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;border:none;background:transparent;transition:all .2s;display:flex;align-items:center;gap:7px;white-space:nowrap;font-family:inherit;letter-spacing:-0.01em}
+.nav-tab i{font-size:15px}
+.nav-tab.active{background:rgba(46,204,143,0.18);color:var(--green);border:1px solid rgba(46,204,143,0.25)}
+.nav-tab:hover:not(.active){color:var(--text);background:rgba(255,255,255,0.06)}
+.status-badge{font-size:11px;font-weight:700;padding:6px 14px;border-radius:50px;display:flex;align-items:center;gap:7px;white-space:nowrap;flex-shrink:0;letter-spacing:.02em}
+.status-live{background:rgba(46,204,143,0.15);border:1px solid rgba(46,204,143,0.35);color:var(--green)}
+.status-offline{background:var(--red-glass);border:1px solid rgba(231,76,60,0.35);color:#ff6b6b}
+.status-loading{background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);color:var(--text-muted)}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.85)}}
+/* Pages */
+.page{display:none;padding:24px 28px;max-width:1000px;margin:0 auto;width:100%;animation:fadeIn .25s ease}
 .page.active{display:block}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:18px}
-.stat{background:rgba(255,255,255,0.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.15);border-radius:18px;padding:16px;transition:transform .2s,box-shadow .2s;cursor:default}
-.stat:hover{transform:translateY(-3px)}
-.stat-icon{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:10px}
-.stat-label{font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
-.stat-value{font-size:22px;font-weight:700;color:#fff}
-.stat-sub{font-size:11px;color:rgba(255,255,255,0.45);margin-top:3px}
-.glass{background:rgba(255,255,255,0.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:18px;margin-bottom:14px}
-.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
-.card-title{font-size:12px;font-weight:700;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:.06em}
-.price-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.07)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+/* Stat Grid */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.stat-card{background:var(--glass);backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:20px;padding:18px;transition:all .25s;cursor:default;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;inset:0;border-radius:20px;background:linear-gradient(135deg,rgba(255,255,255,0.04) 0%,transparent 60%);pointer-events:none}
+.stat-card:hover{transform:translateY(-3px);background:var(--glass-hover);border-color:rgba(255,255,255,0.18)}
+.stat-icon{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.stat-icon i{font-size:20px;color:#fff}
+.stat-label{font-size:11px;color:var(--text-muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.stat-value{font-size:24px;font-weight:700;color:#fff;letter-spacing:-0.03em;line-height:1}
+.stat-sub{font-size:11px;color:var(--text-dim);margin-top:5px}
+/* Glass Cards */
+.glass-card{background:var(--glass);backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:22px;padding:20px;margin-bottom:16px;position:relative;overflow:hidden}
+.glass-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent)}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.card-title{font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:8px}
+.card-title i{font-size:15px;color:var(--green)}
+/* Price Table */
+.price-table{display:flex;flex-direction:column;gap:0}
+.price-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.06);transition:background .15s}
 .price-row:last-child{border-bottom:none}
-.crop-name{font-size:14px;font-weight:700;color:#fff}
-.crop-meta{font-size:12px;color:rgba(255,255,255,0.45);margin-top:2px}
-.crop-variety{font-size:11px;color:rgba(255,255,255,0.3);margin-top:1px}
-.price-val{font-size:15px;font-weight:700;color:#fff}
-.pill{display:inline-flex;align-items:center;padding:3px 10px;border-radius:50px;font-size:11px;font-weight:700;margin-top:3px}
-.pill-up{background:rgba(46,204,143,0.2);color:#2ecc8f;border:1px solid rgba(46,204,143,0.3)}
-.pill-down{background:rgba(231,76,60,0.2);color:#ff6b6b;border:1px solid rgba(231,76,60,0.3)}
-.pill-neutral{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.15)}
+.price-row:hover{background:rgba(255,255,255,0.03);border-radius:10px;padding-left:8px;padding-right:8px;margin:0 -8px}
+.crop-name{font-size:14px;font-weight:700;color:#fff;letter-spacing:-0.01em}
+.crop-location{font-size:12px;color:var(--text-muted);margin-top:2px}
+.crop-variety{font-size:11px;color:var(--text-dim);margin-top:1px}
+.price-right{text-align:right}
+.price-main{font-size:15px;font-weight:700;color:#fff;letter-spacing:-0.02em}
+.price-range{font-size:11px;color:var(--text-dim);margin-top:2px}
+.price-date{font-size:10px;color:var(--text-dim);margin-top:1px}
+/* Badges */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:50px;font-size:11px;font-weight:700;margin-top:4px}
+.badge-up{background:rgba(46,204,143,0.15);color:var(--green);border:1px solid rgba(46,204,143,0.25)}
+.badge-down{background:rgba(231,76,60,0.15);color:#ff6b6b;border:1px solid rgba(231,76,60,0.25)}
+.badge-neutral{background:rgba(255,255,255,0.08);color:var(--text-muted);border:1px solid rgba(255,255,255,0.12)}
+/* Filter Row */
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.glass-select{padding:8px 14px;border-radius:50px;border:1px solid var(--glass-border);background:rgba(0,0,0,0.4);color:#fff;font-size:13px;outline:none;cursor:pointer;font-family:inherit;transition:border .2s;min-width:130px}
+.glass-select:focus{border-color:rgba(46,204,143,0.4)}
+.glass-select option{background:#0d3526;color:#fff}
+/* Two col */
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.form-label{font-size:11px;color:rgba(255,255,255,0.55);margin-bottom:6px;display:block;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
-.form-group{margin-bottom:12px}
-.glass-input{width:100%;padding:10px 16px;border-radius:50px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:#fff;font-size:14px;outline:none;transition:border .2s}
-.glass-input:focus{border-color:rgba(46,204,143,0.5);background:rgba(255,255,255,0.12)}
-.glass-input::placeholder{color:rgba(255,255,255,0.3)}
-.glass-select{width:100%;padding:10px 16px;border-radius:50px;border:1px solid rgba(255,255,255,0.2);background:rgba(0,0,0,0.35);color:#fff;font-size:14px;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none}
-.glass-select option{background:#0d4a38;color:#fff}
-.btn-green{background:linear-gradient(135deg,#2ecc8f,#1a9e6a);color:#fff;border:none;padding:11px 26px;border-radius:50px;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
-.btn-green:hover{transform:translateY(-2px);filter:brightness(1.1)}
-.btn-glass{background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.2);padding:10px 20px;border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
-.btn-glass:hover{background:rgba(255,255,255,0.15)}
-.result-box{background:rgba(46,204,143,0.12);border:1px solid rgba(46,204,143,0.3);border-radius:20px;padding:18px;margin-top:14px}
-.market-chip{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:50px;padding:5px 12px;font-size:12px;color:rgba(255,255,255,0.75);margin:3px}
-.progress-track{height:4px;background:rgba(255,255,255,0.1);border-radius:50px;margin-top:7px;overflow:hidden}
-.progress-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,#2ecc8f,#1a9e6a)}
-.breakdown-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.07);font-size:13px}
-.breakdown-row:last-child{border-bottom:none;padding-top:12px;font-size:15px;font-weight:700}
-.breakdown-label{color:rgba(255,255,255,0.55)}
-.breakdown-val{color:#fff;font-weight:600}
-.profit-val{color:#2ecc8f!important}
-.loss-val{color:#ff6b6b!important}
-.loading{text-align:center;padding:2rem;color:rgba(255,255,255,0.5);font-size:14px}
-.spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,0.2);border-top-color:#2ecc8f;border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:middle}
-@keyframes spin{to{transform:rotate(360deg)}}
-.filter-row{display:flex;gap:8px;flex-wrap:wrap}
-.filter-row .glass-select{width:auto;min-width:140px;padding:8px 14px;font-size:13px}
-.market-card{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:13px;transition:transform .15s}
-.market-card:hover{transform:translateY(-2px);background:rgba(255,255,255,0.1)}
-.market-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
-.alert-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.07)}
+/* Forms */
+.form-label{font-size:11px;color:var(--text-muted);margin-bottom:7px;display:block;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.form-group{margin-bottom:14px}
+.glass-input{width:100%;padding:11px 18px;border-radius:50px;border:1px solid var(--glass-border);background:rgba(255,255,255,0.07);color:#fff;font-size:14px;outline:none;transition:all .2s;font-family:inherit}
+.glass-input:focus{border-color:rgba(46,204,143,0.45);background:rgba(255,255,255,0.1);box-shadow:0 0 0 3px rgba(46,204,143,0.08)}
+.glass-input::placeholder{color:var(--text-dim)}
+.glass-input-full{border-radius:14px!important}
+.form-select{width:100%;padding:11px 18px;border-radius:50px;border:1px solid var(--glass-border);background:rgba(0,0,0,0.45);color:#fff;font-size:14px;outline:none;cursor:pointer;font-family:inherit;transition:border .2s}
+.form-select:focus{border-color:rgba(46,204,143,0.45)}
+.form-select option{background:#0d3526;color:#fff}
+/* Buttons */
+.btn-primary{background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;border:none;padding:12px 28px;border-radius:50px;font-size:14px;font-weight:700;cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:9px;font-family:inherit;letter-spacing:-0.01em;box-shadow:0 4px 20px rgba(46,204,143,0.25)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(46,204,143,0.35);filter:brightness(1.08)}
+.btn-primary:active{transform:translateY(0)}
+.btn-secondary{background:rgba(255,255,255,0.08);color:var(--text);border:1px solid var(--glass-border);padding:11px 22px;border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit;display:inline-flex;align-items:center;gap:8px}
+.btn-secondary:hover{background:rgba(255,255,255,0.13);border-color:rgba(255,255,255,0.2)}
+.btn-danger{background:var(--red-glass);color:#ff6b6b;border:1px solid rgba(231,76,60,0.25);padding:6px 14px;border-radius:50px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:5px;transition:all .2s}
+.btn-danger:hover{background:rgba(231,76,60,0.22)}
+/* Result box */
+.result-hero{border-radius:22px;padding:20px;margin-top:14px;position:relative;overflow:hidden}
+.result-hero::before{content:'';position:absolute;inset:0;border-radius:22px;background:linear-gradient(135deg,rgba(255,255,255,0.05) 0%,transparent 60%);pointer-events:none}
+.result-profit{background:rgba(46,204,143,0.12);border:1px solid rgba(46,204,143,0.28)}
+.result-loss{background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.25)}
+.result-title{font-size:19px;font-weight:700;display:flex;align-items:center;gap:10px;letter-spacing:-0.02em}
+.result-sub{font-size:13px;color:var(--text-muted);margin-top:5px}
+.result-amount{font-size:28px;font-weight:800;letter-spacing:-0.04em;line-height:1}
+.result-amount-label{font-size:12px;color:var(--text-muted);margin-top:4px}
+/* Chips */
+.chip{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:50px;padding:5px 13px;font-size:12px;color:rgba(255,255,255,0.7);margin:3px}
+.chip i{font-size:13px}
+/* Breakdown */
+.breakdown{display:flex;flex-direction:column;gap:0}
+.breakdown-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:13px}
+.breakdown-row:last-child{border-bottom:none;padding-top:13px;font-size:15px;font-weight:700}
+.breakdown-label{color:var(--text-muted)}
+.val-green{color:var(--green)!important;font-weight:700}
+.val-red{color:#ff6b6b!important;font-weight:600}
+.val-white{color:#fff!important;font-weight:700}
+/* Rank badge */
+.rank-badge{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;margin-right:12px;flex-shrink:0;border:1px solid rgba(255,255,255,0.12)}
+.rank-1{background:rgba(241,196,15,0.2);border-color:rgba(241,196,15,0.4);color:#f1c40f}
+.rank-2{background:rgba(189,195,199,0.2);border-color:rgba(189,195,199,0.4);color:#bdc3c7}
+.rank-3{background:rgba(205,127,50,0.2);border-color:rgba(205,127,50,0.4);color:#cd7f32}
+/* Market grid */
+.market-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:12px}
+.market-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.09);border-radius:18px;padding:16px;transition:all .2s;cursor:default;position:relative;overflow:hidden}
+.market-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent)}
+.market-card:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.15);transform:translateY(-2px)}
+.market-icon{width:38px;height:38px;border-radius:12px;background:rgba(46,204,143,0.12);border:1px solid rgba(46,204,143,0.2);display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.market-icon i{font-size:20px;color:var(--green)}
+.market-name{font-size:13px;font-weight:700;color:#fff;letter-spacing:-0.01em}
+.market-district{font-size:11px;color:var(--text-muted);margin-top:3px}
+.market-price{font-size:14px;font-weight:700;color:var(--green);margin-top:10px}
+.market-crop{font-size:11px;color:var(--text-dim);margin-top:2px}
+/* Alert items */
+.alert-item{display:flex;align-items:center;gap:13px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
 .alert-item:last-child{border-bottom:none}
-.alert-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
-.rank-badge{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;margin-right:10px;flex-shrink:0}
-.no-data{text-align:center;padding:2rem;color:rgba(255,255,255,0.4);font-size:14px}
-@media(max-width:600px){.two-col{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.nav-tabs{display:none}}
+.alert-indicator{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.alert-live{background:var(--green);box-shadow:0 0 8px rgba(46,204,143,0.5)}
+.alert-triggered{background:var(--amber);box-shadow:0 0 8px rgba(243,156,18,0.5)}
+/* Progress */
+.progress-track{height:4px;background:rgba(255,255,255,0.08);border-radius:50px;margin-top:8px;overflow:hidden}
+.progress-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--green),var(--green-dark))}
+/* Nearby grid */
+.nearby-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.nearby-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.09);border-radius:16px;padding:14px;transition:all .2s}
+.nearby-card:hover{background:rgba(255,255,255,0.09);transform:translateY(-2px)}
+.nearby-card.best{background:rgba(46,204,143,0.1);border-color:rgba(46,204,143,0.25)}
+/* Loading */
+.loading{display:flex;align-items:center;justify-content:center;gap:10px;padding:2.5rem;color:var(--text-muted);font-size:14px}
+.spinner{width:20px;height:20px;border:2px solid rgba(255,255,255,0.1);border-top-color:var(--green);border-radius:50%;animation:spin .75s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:2.5rem;color:var(--text-dim);font-size:14px}
+.empty i{font-size:36px;display:block;margin-bottom:10px;opacity:.4}
+/* Separator */
+.sep{height:1px;background:rgba(255,255,255,0.07);margin:12px 0}
+/* Scrollbar */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.12);border-radius:3px}
+/* Responsive */
+@media(max-width:700px){
+  .nav{padding:0 16px}
+  .nav-tab span{display:none}
+  .page{padding:16px}
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .two-col{grid-template-columns:1fr}
+  .nearby-grid{grid-template-columns:1fr 1fr}
+  .result-hero .flex-between{flex-direction:column;gap:14px}
+}
+.flex-between{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.flex-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 </style>
 </head>
 <body>
-<div class="orb1"></div>
-<div class="orb2"></div>
+<div class="bg"><div class="bg-mid"></div></div>
+<div class="app">
 
-<div class="nav">
-  <div class="brand"><div class="brand-icon">🌿</div>Kisan Price Buddy</div>
-  <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showPage('dashboard',this)">📊 Dashboard</button>
-    <button class="nav-tab" onclick="showPage('sell',this)">💰 Sell</button>
-    <button class="nav-tab" onclick="showPage('alerts',this)">🔔 Alerts</button>
-    <button class="nav-tab" onclick="showPage('markets',this)">🏪 Markets</button>
+<nav class="nav">
+  <div class="brand">
+    <div class="brand-icon"><i class="ti ti-leaf"></i></div>
+    Kisan Price Buddy
   </div>
-  <div id="apiStatus" class="offline-badge">Connecting...</div>
-</div>
+  <div class="nav-center">
+    <button class="nav-tab active" onclick="showPage('dashboard',this)">
+      <i class="ti ti-layout-dashboard"></i><span>Dashboard</span>
+    </button>
+    <button class="nav-tab" onclick="showPage('sell',this)">
+      <i class="ti ti-trending-up"></i><span>Sell</span>
+    </button>
+    <button class="nav-tab" onclick="showPage('alerts',this)">
+      <i class="ti ti-bell"></i><span>Alerts</span>
+    </button>
+    <button class="nav-tab" onclick="showPage('markets',this)">
+      <i class="ti ti-building-store"></i><span>Markets</span>
+    </button>
+  </div>
+  <div id="apiStatus" class="status-badge status-loading">
+    <div class="spinner" style="width:10px;height:10px;border-width:1.5px"></div>
+    Connecting
+  </div>
+</nav>
 
+<!-- DASHBOARD -->
 <div id="dashboard" class="page active">
-  <div class="stats">
-    <div class="stat"><div class="stat-icon" style="background:rgba(46,204,143,0.2)">📦</div><div class="stat-label">Total Records</div><div class="stat-value" id="totalRecords">—</div><div class="stat-sub">Today's data</div></div>
-    <div class="stat"><div class="stat-icon" style="background:rgba(52,152,219,0.2)">🏪</div><div class="stat-label">Markets</div><div class="stat-value" id="totalMarkets">—</div><div class="stat-sub" id="statState">Loading...</div></div>
-    <div class="stat"><div class="stat-icon" style="background:rgba(155,89,182,0.2)">🌾</div><div class="stat-label">Commodities</div><div class="stat-value" id="totalCommodities">—</div><div class="stat-sub">Available</div></div>
-    <div class="stat"><div class="stat-icon" style="background:rgba(243,156,18,0.2)">💰</div><div class="stat-label">Highest Price</div><div class="stat-value" id="highestPrice" style="color:#2ecc8f">—</div><div class="stat-sub" id="highestCrop">—</div></div>
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:rgba(46,204,143,0.2)"><i class="ti ti-database"></i></div>
+      <div class="stat-label">Total Records</div>
+      <div class="stat-value" id="totalRecords">—</div>
+      <div class="stat-sub">Today's mandi data</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:rgba(52,152,219,0.2)"><i class="ti ti-building-store"></i></div>
+      <div class="stat-label">Active Markets</div>
+      <div class="stat-value" id="totalMarkets">—</div>
+      <div class="stat-sub" id="statState">Loading...</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:rgba(155,89,182,0.2)"><i class="ti ti-plant-2"></i></div>
+      <div class="stat-label">Commodities</div>
+      <div class="stat-value" id="totalCommodities">—</div>
+      <div class="stat-sub">Available today</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:rgba(243,156,18,0.2)"><i class="ti ti-coin-rupee"></i></div>
+      <div class="stat-label">Highest Price</div>
+      <div class="stat-value val-green" id="highestPrice">—</div>
+      <div class="stat-sub" id="highestCrop">—</div>
+    </div>
   </div>
-  <div class="glass">
-    <div class="card-head">
-      <div class="card-title">Live Mandi Prices</div>
+
+  <div class="glass-card">
+    <div class="card-header">
+      <div class="card-title"><i class="ti ti-activity"></i> Live Mandi Prices</div>
       <div class="filter-row">
-        <select class="glass-select" id="filterState" onchange="loadPrices()"><option value="">All States</option></select>
-        <select class="glass-select" id="filterCommodity" onchange="loadPrices()"><option value="">All Crops</option></select>
+        <select class="glass-select" id="filterState" onchange="loadPrices()">
+          <option value="">All States</option>
+        </select>
+        <select class="glass-select" id="filterCommodity" onchange="loadPrices()">
+          <option value="">All Crops</option>
+        </select>
       </div>
     </div>
-    <div id="pricesList"><div class="loading"><span class="spinner"></span>Fetching live prices...</div></div>
+    <div id="pricesList"><div class="loading"><div class="spinner"></div>Fetching live prices...</div></div>
   </div>
 </div>
 
+<!-- SELL -->
 <div id="sell" class="page">
-  <div class="glass">
-    <div class="card-title" style="margin-bottom:16px">🧮 Sell Analysis</div>
+  <div class="glass-card">
+    <div class="card-title" style="margin-bottom:18px"><i class="ti ti-calculator"></i> Sell Analysis</div>
     <div class="two-col">
-      <div class="form-group"><label class="form-label">Crop</label><select class="glass-select" id="s-crop"><option value="">Select crop</option></select></div>
-      <div class="form-group"><label class="form-label">State</label><select class="glass-select" id="s-state"><option value="">Select state</option></select></div>
-    </div>
-    <div class="two-col">
-      <div class="form-group"><label class="form-label">Quantity (quintals)</label><input class="glass-input" type="number" id="s-qty" value="10" min="1"></div>
-      <div class="form-group"><label class="form-label">Your cost per quintal (Rs.)</label><input class="glass-input" type="number" id="s-cost" value="1800" min="0"></div>
-    </div>
-    <button class="btn-green" onclick="runAnalysis()">🔍 Analyze Best Market</button>
-  </div>
-  <div id="sell-result" style="display:none"></div>
-</div>
-
-<div id="alerts" class="page">
-  <div class="glass">
-    <div class="card-title" style="margin-bottom:16px">🔔 Set Price Alert</div>
-    <div class="two-col">
-      <div class="form-group"><label class="form-label">Crop</label><select class="glass-select" id="a-crop"><option value="">Select crop</option></select></div>
-      <div class="form-group"><label class="form-label">Condition</label><select class="glass-select" id="a-condition"><option value="above">Above price</option><option value="below">Below price</option></select></div>
-    </div>
-    <div class="two-col">
-      <div class="form-group"><label class="form-label">Target Price (Rs./quintal)</label><input class="glass-input" type="number" id="a-price" value="3000"></div>
-      <div class="form-group"><label class="form-label">State</label><select class="glass-select" id="a-state"><option value="">Select state</option></select></div>
-    </div>
-    <button class="btn-green" onclick="addAlert()">➕ Add Alert</button>
-  </div>
-  <div class="glass">
-    <div class="card-title" style="margin-bottom:14px">📋 Active Alerts</div>
-    <div id="alertsList"><div class="no-data">No alerts yet. Add one above!</div></div>
-  </div>
-</div>
-
-<div id="markets" class="page">
-  <div class="glass">
-    <div class="card-head">
-      <div class="card-title">🏪 Markets Directory</div>
-      <div class="filter-row">
-        <select class="glass-select" id="m-state" onchange="loadMarkets()"><option value="">Select State</option></select>
-        <input class="glass-input" type="text" id="m-search" placeholder="Search market..." style="border-radius:50px;padding:8px 16px;font-size:13px;width:160px" oninput="filterMarkets()">
+      <div class="form-group">
+        <label class="form-label">Crop / Commodity</label>
+        <select class="form-select" id="s-crop"><option value="">Select crop</option></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">State</label>
+        <select class="form-select" id="s-state"><option value="">Select state</option></select>
       </div>
     </div>
-    <div id="marketsList"><div class="no-data">Select a state to see markets</div></div>
+    <div class="two-col">
+      <div class="form-group">
+        <label class="form-label">Quantity (Quintals)</label>
+        <input class="glass-input" type="number" id="s-qty" value="10" min="1" placeholder="e.g. 10">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Your Cost per Quintal (Rs.)</label>
+        <input class="glass-input" type="number" id="s-cost" value="1800" min="0" placeholder="e.g. 1800">
+      </div>
+    </div>
+    <button class="btn-primary" onclick="runAnalysis()">
+      <i class="ti ti-search"></i> Analyze Best Market
+    </button>
+  </div>
+  <div id="sell-result"></div>
+</div>
+
+<!-- ALERTS -->
+<div id="alerts" class="page">
+  <div class="glass-card">
+    <div class="card-title" style="margin-bottom:18px"><i class="ti ti-bell-plus"></i> Create Price Alert</div>
+    <div class="two-col">
+      <div class="form-group">
+        <label class="form-label">Crop</label>
+        <select class="form-select" id="a-crop"><option value="">Select crop</option></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Alert When Price Goes</label>
+        <select class="form-select" id="a-condition">
+          <option value="above">Above target price</option>
+          <option value="below">Below target price</option>
+        </select>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="form-group">
+        <label class="form-label">Target Price (Rs./Quintal)</label>
+        <input class="glass-input" type="number" id="a-price" value="3000" placeholder="e.g. 3000">
+      </div>
+      <div class="form-group">
+        <label class="form-label">State</label>
+        <select class="form-select" id="a-state"><option value="">Select state</option></select>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="addAlert()">
+      <i class="ti ti-plus"></i> Add Alert
+    </button>
+  </div>
+  <div class="glass-card">
+    <div class="card-title" style="margin-bottom:16px"><i class="ti ti-list-check"></i> Active Alerts</div>
+    <div id="alertsList">
+      <div class="empty"><i class="ti ti-bell-off"></i>No alerts yet. Add one above!</div>
+    </div>
   </div>
 </div>
+
+<!-- MARKETS -->
+<div id="markets" class="page">
+  <div class="glass-card">
+    <div class="card-header">
+      <div class="card-title"><i class="ti ti-map-pin"></i> Markets Directory</div>
+      <div class="filter-row">
+        <select class="glass-select" id="m-state" onchange="loadMarkets()">
+          <option value="">Select State</option>
+        </select>
+        <input class="glass-input" type="text" id="m-search"
+          placeholder="Search market..."
+          style="width:160px;padding:8px 16px;font-size:13px;border-radius:50px"
+          oninput="filterMarkets()">
+      </div>
+    </div>
+    <div id="marketsList">
+      <div class="empty"><i class="ti ti-building-store"></i>Select a state to see markets</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end .app -->
 
 <script>
 var API = 'https://agri-price-backend-p4yw.onrender.com';
@@ -173,19 +362,21 @@ function init() {
   loadStates();
   loadCommodities();
   renderAlerts();
-  setTimeout(function(){ loadPrices(); }, 1200);
+  setTimeout(loadPrices, 1000);
 }
 
 function checkAPI() {
-  fetch(API + '/health').then(function(r) {
-    if (r.ok) {
-      document.getElementById('apiStatus').innerHTML = '<span style="display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:#2ecc8f;display:inline-block;animation:pulse 1.5s infinite"></span>API Live</span>';
-      document.getElementById('apiStatus').className = 'live-badge';
-    }
-  }).catch(function() {
-    document.getElementById('apiStatus').textContent = 'Offline';
-    document.getElementById('apiStatus').className = 'offline-badge';
-  });
+  fetch(API + '/health')
+    .then(function(r) {
+      if (r.ok) {
+        document.getElementById('apiStatus').innerHTML = '<div class="pulse"></div> API Live';
+        document.getElementById('apiStatus').className = 'status-badge status-live';
+      }
+    })
+    .catch(function() {
+      document.getElementById('apiStatus').innerHTML = '<i class="ti ti-wifi-off" style="font-size:13px"></i> Offline';
+      document.getElementById('apiStatus').className = 'status-badge status-offline';
+    });
 }
 
 function populateSelect(id, items, def) {
@@ -201,75 +392,80 @@ function populateSelect(id, items, def) {
 }
 
 function loadStates() {
-  fetch(API + '/api/prices/states').then(function(r){ return r.json(); }).then(function(data) {
-    if (data.success) {
-      populateSelect('filterState', data.states, 'All States');
-      populateSelect('s-state', data.states, 'Select state');
-      populateSelect('a-state', data.states, 'Select state');
-      populateSelect('m-state', data.states, 'Select State');
-    }
-  }).catch(function(e){ console.error(e); });
+  fetch(API + '/api/prices/states')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.success) {
+        ['filterState','s-state','a-state','m-state'].forEach(function(id) {
+          var def = id === 'filterState' ? 'All States' : id === 'm-state' ? 'Select State' : 'Select state';
+          populateSelect(id, data.states, def);
+        });
+      }
+    }).catch(function(){});
 }
 
 function loadCommodities() {
-  fetch(API + '/api/prices/commodities').then(function(r){ return r.json(); }).then(function(data) {
-    if (data.success) {
-      populateSelect('filterCommodity', data.commodities, 'All Crops');
-      populateSelect('s-crop', data.commodities, 'Select crop');
-      populateSelect('a-crop', data.commodities, 'Select crop');
-    }
-  }).catch(function(e){ console.error(e); });
+  fetch(API + '/api/prices/commodities')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.success) {
+        populateSelect('filterCommodity', data.commodities, 'All Crops');
+        populateSelect('s-crop', data.commodities, 'Select crop');
+        populateSelect('a-crop', data.commodities, 'Select crop');
+      }
+    }).catch(function(){});
 }
 
 function loadPrices() {
   var state = document.getElementById('filterState').value || 'Tamil Nadu';
   var commodity = document.getElementById('filterCommodity').value;
-  document.getElementById('pricesList').innerHTML = '<div class="loading"><span class="spinner"></span>Fetching live prices...</div>';
+  document.getElementById('pricesList').innerHTML = '<div class="loading"><div class="spinner"></div>Fetching live prices...</div>';
   var url = API + '/api/prices/current?state=' + encodeURIComponent(state);
   if (commodity) url += '&commodity=' + encodeURIComponent(commodity);
-  fetch(url).then(function(r){ return r.json(); }).then(function(data) {
-    if (data.success && data.prices.length > 0) {
-      allPrices = data.prices;
-      renderPrices(data.prices);
-      updateStats(data.prices, state);
-    } else {
-      document.getElementById('pricesList').innerHTML = '<div class="no-data">No data found. Try a different filter.</div>';
-    }
-  }).catch(function() {
-    document.getElementById('pricesList').innerHTML = '<div class="no-data">Error loading prices.</div>';
-  });
+  fetch(url)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.success && data.prices.length > 0) {
+        allPrices = data.prices;
+        renderPrices(data.prices);
+        updateStats(data.prices, state);
+      } else {
+        document.getElementById('pricesList').innerHTML = '<div class="empty"><i class="ti ti-database-off"></i>No data found. Try a different filter.</div>';
+      }
+    }).catch(function() {
+      document.getElementById('pricesList').innerHTML = '<div class="empty"><i class="ti ti-wifi-off"></i>Connection error. Please try again.</div>';
+    });
 }
 
 function renderPrices(prices) {
-  var html = prices.slice(0, 80).map(function(p) {
+  var html = '<div class="price-table">' + prices.slice(0, 100).map(function(p) {
     var minP = Number(p.min_price || p.price).toLocaleString('en-IN');
     var maxP = Number(p.max_price || p.price).toLocaleString('en-IN');
     return '<div class="price-row">' +
       '<div>' +
         '<div class="crop-name">' + p.commodity + '</div>' +
-        '<div class="crop-meta">' + p.market + ' · ' + p.district + ', ' + p.state + '</div>' +
-        (p.variety ? '<div class="crop-variety">' + p.variety + '</div>' : '') +
+        '<div class="crop-location"><i class="ti ti-map-pin" style="font-size:11px"></i> ' + p.market + ' &middot; ' + p.district + ', ' + p.state + '</div>' +
+        (p.variety && p.variety !== p.commodity ? '<div class="crop-variety">Variety: ' + p.variety + '</div>' : '') +
       '</div>' +
-      '<div style="text-align:right">' +
-        '<div class="price-val">Rs.' + Number(p.price).toLocaleString('en-IN') + '/q</div>' +
-        '<div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:2px">' + minP + ' – ' + maxP + '</div>' +
-        '<div style="font-size:11px;color:rgba(255,255,255,0.3)">' + p.date + '</div>' +
+      '<div class="price-right">' +
+        '<div class="price-main">Rs. ' + Number(p.price).toLocaleString('en-IN') + '<span style="font-size:11px;font-weight:500;color:var(--text-muted)">/q</span></div>' +
+        '<div class="price-range">Rs. ' + minP + ' &ndash; ' + maxP + '</div>' +
+        '<div class="price-date">' + p.date + '</div>' +
       '</div>' +
     '</div>';
-  }).join('');
-  document.getElementById('pricesList').innerHTML = html || '<div class="no-data">No prices found</div>';
+  }).join('') + '</div>';
+  document.getElementById('pricesList').innerHTML = html;
 }
 
 function updateStats(prices, state) {
-  var markets = {};
-  var commodities = {};
-  prices.forEach(function(p){ markets[p.market]=1; commodities[p.commodity]=1; });
-  var highest = prices.reduce(function(a,b){ return a.price>b.price?a:b; }, prices[0]);
+  var markets = {}, commodities = {};
+  prices.forEach(function(p) { markets[p.market] = 1; commodities[p.commodity] = 1; });
+  var highest = prices.reduce(function(a, b) { return a.price > b.price ? a : b; }, prices[0]);
   document.getElementById('totalRecords').textContent = prices.length;
   document.getElementById('totalMarkets').textContent = Object.keys(markets).length;
   document.getElementById('totalCommodities').textContent = Object.keys(commodities).length;
-  document.getElementById('highestPrice').textContent = 'Rs.' + Number(highest.price).toLocaleString('en-IN');
-  document.getElementById('highestCrop').textContent = highest.commodity + ' · ' + highest.market;
+  document.getElementById('highestPrice').textContent = 'Rs. ' + Number(highest.price).toLocaleString('en-IN');
+  document.getElementById('highestCrop').textContent = highest.commodity + ' \u00b7 ' + highest.market;
   document.getElementById('statState').textContent = state || 'All States';
 }
 
@@ -281,13 +477,13 @@ function runAnalysis() {
   var resultDiv = document.getElementById('sell-result');
   if (!crop) { alert('Please select a crop'); return; }
   if (!state) { alert('Please select a state'); return; }
-  resultDiv.innerHTML = '<div class="loading"><span class="spinner"></span>Analyzing markets...</div>';
-  resultDiv.style.display = 'block';
+  resultDiv.innerHTML = '<div class="loading"><div class="spinner"></div>Analyzing markets...</div>';
+
   fetch(API + '/api/prices/current?state=' + encodeURIComponent(state) + '&commodity=' + encodeURIComponent(crop))
-    .then(function(r){ return r.json(); })
+    .then(function(r) { return r.json(); })
     .then(function(data) {
       if (data.success && data.prices.length > 0) {
-        var prices = data.prices.sort(function(a,b){ return b.price-a.price; });
+        var prices = data.prices.sort(function(a, b) { return b.price - a.price; });
         var best = prices[0];
         var revenue = best.price * qty;
         var costTotal = cost * qty;
@@ -295,109 +491,128 @@ function runAnalysis() {
         var commission = Math.round(revenue * 0.02);
         var loading = qty * 10;
         var netProfit = revenue - costTotal - transport - commission - loading;
-        var margin = ((netProfit/costTotal)*100).toFixed(1);
+        var margin = ((netProfit / costTotal) * 100).toFixed(1);
         var isProfit = netProfit > 0;
-        var decisionColor = isProfit ? '#2ecc8f' : '#ff6b6b';
-        var decisionBg = isProfit ? 'rgba(46,204,143,0.12)' : 'rgba(231,76,60,0.12)';
-        var decisionBorder = isProfit ? 'rgba(46,204,143,0.3)' : 'rgba(231,76,60,0.3)';
+        var heroClass = isProfit ? 'result-profit' : 'result-loss';
+        var titleColor = isProfit ? 'var(--green)' : '#ff6b6b';
+        var amountColor = isProfit ? 'var(--green)' : '#ff6b6b';
 
-        var marketsHtml = prices.slice(0,8).map(function(p,i) {
-          var rev = p.price * qty;
-          var np = rev - costTotal - transport - Math.round(rev*0.02) - loading;
-          var npColor = np>0?'#2ecc8f':'#ff6b6b';
-          return '<div class="price-row">' +
-            '<div style="display:flex;align-items:center">' +
-              '<div class="rank-badge">' + (i+1) + '</div>' +
-              '<div><div class="crop-name">' + p.market + '</div>' +
-              '<div class="crop-meta">' + p.district + ' · Rs.' + Number(p.price).toLocaleString('en-IN') + '/q</div></div>' +
-            '</div>' +
-            '<div style="text-align:right">' +
-              '<div style="font-size:15px;font-weight:700;color:' + npColor + '">Rs.' + Number(np).toLocaleString('en-IN') + '</div>' +
-              '<div style="font-size:11px;color:rgba(255,255,255,0.4)">' + ((np/costTotal)*100).toFixed(1) + '% margin</div>' +
-            '</div>' +
-          '</div>';
+        var chipsHtml = prices.slice(0, 3).map(function(p, i) {
+          var icons = ['ti-trophy','ti-medal','ti-award'];
+          var colors = ['#f1c40f','#bdc3c7','#cd7f32'];
+          return '<span class="chip"><i class="ti ' + icons[i] + '" style="color:' + colors[i] + '"></i>' + p.market + ' &middot; Rs.' + p.price + '</span>';
         }).join('');
 
-        var chipsHtml = prices.slice(0,3).map(function(p,i){
-          var medals = ['🥇','🥈','🥉'];
-          return '<span class="market-chip">' + medals[i] + ' ' + p.market + ' Rs.' + p.price + '</span>';
+        var rankClasses = ['rank-1','rank-2','rank-3'];
+        var marketsHtml = prices.slice(0, 8).map(function(p, i) {
+          var rev = p.price * qty;
+          var np = rev - costTotal - transport - Math.round(rev * 0.02) - loading;
+          var nc = np > 0 ? 'val-green' : 'val-red';
+          var rc = i < 3 ? rankClasses[i] : '';
+          return '<div class="price-row">' +
+            '<div style="display:flex;align-items:center">' +
+              '<div class="rank-badge ' + rc + '">' + (i + 1) + '</div>' +
+              '<div>' +
+                '<div class="crop-name">' + p.market + '</div>' +
+                '<div class="crop-location">' + p.district + ' &middot; Rs. ' + Number(p.price).toLocaleString('en-IN') + '/q</div>' +
+              '</div>' +
+            '</div>' +
+            '<div style="text-align:right">' +
+              '<div class="price-main ' + nc + '">Rs. ' + Number(np).toLocaleString('en-IN') + '</div>' +
+              '<div class="price-range">' + ((np / costTotal) * 100).toFixed(1) + '% margin</div>' +
+            '</div>' +
+          '</div>';
         }).join('');
 
         resultDiv.innerHTML =
-          '<div style="background:' + decisionBg + ';border:1px solid ' + decisionBorder + ';border-radius:20px;padding:18px;margin-top:14px">' +
-            '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">' +
+          '<div class="result-hero ' + heroClass + '">' +
+            '<div class="flex-between">' +
               '<div>' +
-                '<div style="font-size:18px;font-weight:700;color:' + decisionColor + '">' + (isProfit?'✅ Sell Now':'⏳ Consider Waiting') + ' — ' + best.market + '</div>' +
-                '<div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:4px">' + best.district + ', ' + best.state + ' · Rs.' + Number(best.price).toLocaleString('en-IN') + '/quintal</div>' +
-                '<div style="margin-top:10px">' + chipsHtml + '</div>' +
+                '<div class="result-title" style="color:' + titleColor + '">' +
+                  '<i class="ti ti-' + (isProfit ? 'circle-check' : 'clock') + '" style="font-size:22px"></i>' +
+                  (isProfit ? 'Sell Now &mdash; ' : 'Consider Waiting &mdash; ') + best.market +
+                '</div>' +
+                '<div class="result-sub">' + best.district + ', ' + best.state + ' &middot; Rs. ' + Number(best.price).toLocaleString('en-IN') + ' per quintal</div>' +
+                '<div style="margin-top:12px">' + chipsHtml + '</div>' +
               '</div>' +
               '<div style="text-align:right">' +
-                '<div style="font-size:26px;font-weight:700;color:' + decisionColor + '">Rs.' + Number(netProfit).toLocaleString('en-IN') + '</div>' +
-                '<div style="font-size:12px;color:rgba(255,255,255,0.45)">net profit · ' + margin + '% margin</div>' +
+                '<div class="result-amount" style="color:' + amountColor + '">Rs. ' + Number(netProfit).toLocaleString('en-IN') + '</div>' +
+                '<div class="result-amount-label">Estimated net profit &middot; ' + margin + '% margin</div>' +
               '</div>' +
             '</div>' +
           '</div>' +
-          '<div class="glass" style="margin-top:14px">' +
-            '<div class="card-title" style="margin-bottom:12px">💰 Profit Breakdown</div>' +
-            '<div class="breakdown-row"><span class="breakdown-label">Selling price (' + qty + 'q × Rs.' + best.price + ')</span><span class="breakdown-val">Rs.' + Number(revenue).toLocaleString('en-IN') + '</span></div>' +
-            '<div class="breakdown-row"><span class="breakdown-label">Your cost</span><span class="breakdown-val loss-val">−Rs.' + Number(costTotal).toLocaleString('en-IN') + '</span></div>' +
-            '<div class="breakdown-row"><span class="breakdown-label">Transport (est.)</span><span class="breakdown-val loss-val">−Rs.' + Number(transport).toLocaleString('en-IN') + '</span></div>' +
-            '<div class="breakdown-row"><span class="breakdown-label">Commission 2%</span><span class="breakdown-val loss-val">−Rs.' + Number(commission).toLocaleString('en-IN') + '</span></div>' +
-            '<div class="breakdown-row"><span class="breakdown-label">Loading/Unloading</span><span class="breakdown-val loss-val">−Rs.' + Number(loading).toLocaleString('en-IN') + '</span></div>' +
-            '<div class="breakdown-row"><span class="breakdown-label">Net Profit</span><span class="breakdown-val ' + (isProfit?'profit-val':'loss-val') + '">Rs.' + Number(netProfit).toLocaleString('en-IN') + '</span></div>' +
+          '<div class="glass-card" style="margin-top:14px">' +
+            '<div class="card-title" style="margin-bottom:14px"><i class="ti ti-receipt-2"></i> Profit Breakdown</div>' +
+            '<div class="breakdown">' +
+              '<div class="breakdown-row"><span class="breakdown-label">Selling price (' + qty + 'q &times; Rs. ' + best.price + ')</span><span class="val-white">Rs. ' + Number(revenue).toLocaleString('en-IN') + '</span></div>' +
+              '<div class="breakdown-row"><span class="breakdown-label">Your production cost</span><span class="val-red">&minus; Rs. ' + Number(costTotal).toLocaleString('en-IN') + '</span></div>' +
+              '<div class="breakdown-row"><span class="breakdown-label">Transport (estimated)</span><span class="val-red">&minus; Rs. ' + Number(transport).toLocaleString('en-IN') + '</span></div>' +
+              '<div class="breakdown-row"><span class="breakdown-label">Mandi commission (2%)</span><span class="val-red">&minus; Rs. ' + Number(commission).toLocaleString('en-IN') + '</span></div>' +
+              '<div class="breakdown-row"><span class="breakdown-label">Loading &amp; Unloading</span><span class="val-red">&minus; Rs. ' + Number(loading).toLocaleString('en-IN') + '</span></div>' +
+              '<div class="breakdown-row"><span style="font-size:15px;color:#fff;font-weight:700">Net Profit</span><span style="font-size:15px" class="' + (isProfit ? 'val-green' : 'val-red') + '">Rs. ' + Number(netProfit).toLocaleString('en-IN') + '</span></div>' +
+            '</div>' +
           '</div>' +
-          '<div class="glass">' +
-            '<div class="card-title" style="margin-bottom:12px">🏪 All Markets — ' + crop + ' in ' + state + '</div>' +
-            marketsHtml +
+          '<div class="glass-card">' +
+            '<div class="card-title" style="margin-bottom:14px"><i class="ti ti-building-store"></i> All Markets &mdash; ' + crop + ' in ' + state + '</div>' +
+            '<div class="price-table">' + marketsHtml + '</div>' +
           '</div>' +
-          '<div style="display:flex;gap:10px;margin-top:4px;flex-wrap:wrap">' +
-            '<button class="btn-green" onclick="document.getElementById(\'sell-result\').style.display=\'none\'">🔄 New Analysis</button>' +
-            '<button class="btn-glass" onclick="window.print()">🖨️ Print Report</button>' +
+          '<div class="flex-row" style="margin-top:4px;margin-bottom:8px">' +
+            '<button class="btn-primary" onclick="document.getElementById(\'sell-result\').innerHTML=\'\'"><i class="ti ti-refresh"></i> New Analysis</button>' +
+            '<button class="btn-secondary" onclick="window.print()"><i class="ti ti-printer"></i> Print</button>' +
           '</div>';
       } else {
-        resultDiv.innerHTML = '<div class="glass" style="text-align:center;color:rgba(255,255,255,0.5)">No market data found for ' + crop + ' in ' + state + '. Try another combination.</div>';
+        resultDiv.innerHTML = '<div class="glass-card"><div class="empty"><i class="ti ti-search-off"></i>No market data found for ' + crop + ' in ' + state + '. Try another combination.</div></div>';
       }
-    }).catch(function(e){
-      resultDiv.innerHTML = '<div class="glass" style="color:#ff6b6b">Error: ' + e.message + '</div>';
+    }).catch(function(e) {
+      resultDiv.innerHTML = '<div class="glass-card"><div class="empty" style="color:#ff6b6b"><i class="ti ti-alert-circle"></i>' + e.message + '</div></div>';
     });
 }
 
 function loadMarkets() {
   var state = document.getElementById('m-state').value;
   if (!state) return;
-  document.getElementById('marketsList').innerHTML = '<div class="loading"><span class="spinner"></span>Loading markets...</div>';
+  document.getElementById('marketsList').innerHTML = '<div class="loading"><div class="spinner"></div>Loading markets...</div>';
   fetch(API + '/api/prices/current?state=' + encodeURIComponent(state))
-    .then(function(r){ return r.json(); })
+    .then(function(r) { return r.json(); })
     .then(function(data) {
       if (data.success && data.prices.length > 0) {
         var seen = {};
-        allMarkets = data.prices.filter(function(p){ if(seen[p.market])return false; seen[p.market]=true; return true; });
+        allMarkets = data.prices.filter(function(p) {
+          if (seen[p.market]) return false;
+          seen[p.market] = true; return true;
+        });
         renderMarkets(allMarkets);
       } else {
-        document.getElementById('marketsList').innerHTML = '<div class="no-data">No markets found for ' + state + '</div>';
+        document.getElementById('marketsList').innerHTML = '<div class="empty"><i class="ti ti-building-off"></i>No markets found for ' + state + '</div>';
       }
-    }).catch(function(){
-      document.getElementById('marketsList').innerHTML = '<div class="no-data">Error loading markets</div>';
+    }).catch(function() {
+      document.getElementById('marketsList').innerHTML = '<div class="empty"><i class="ti ti-wifi-off"></i>Error loading markets</div>';
     });
 }
 
 function filterMarkets() {
   var q = document.getElementById('m-search').value.toLowerCase();
-  var filtered = allMarkets.filter(function(m){ return m.market.toLowerCase().indexOf(q)!==-1||m.district.toLowerCase().indexOf(q)!==-1; });
+  var filtered = allMarkets.filter(function(m) {
+    return m.market.toLowerCase().indexOf(q) !== -1 || m.district.toLowerCase().indexOf(q) !== -1;
+  });
   renderMarkets(filtered);
 }
 
 function renderMarkets(markets) {
+  if (!markets.length) {
+    document.getElementById('marketsList').innerHTML = '<div class="empty"><i class="ti ti-search-off"></i>No markets found</div>';
+    return;
+  }
   var html = '<div class="market-grid">' + markets.map(function(m) {
     return '<div class="market-card">' +
-      '<div style="font-size:22px;margin-bottom:8px">🏪</div>' +
-      '<div style="font-size:14px;font-weight:700;color:#fff">' + m.market + '</div>' +
-      '<div style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:2px">' + m.district + '</div>' +
-      '<div style="font-size:13px;font-weight:700;color:#2ecc8f;margin-top:8px">Rs.' + Number(m.price).toLocaleString('en-IN') + '/q</div>' +
-      '<div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:2px">' + m.commodity + '</div>' +
+      '<div class="market-icon"><i class="ti ti-building-store"></i></div>' +
+      '<div class="market-name">' + m.market + '</div>' +
+      '<div class="market-district"><i class="ti ti-map-pin" style="font-size:10px"></i> ' + m.district + '</div>' +
+      '<div class="market-price">Rs. ' + Number(m.price).toLocaleString('en-IN') + '/q</div>' +
+      '<div class="market-crop">' + m.commodity + '</div>' +
     '</div>';
   }).join('') + '</div>';
-  document.getElementById('marketsList').innerHTML = html || '<div class="no-data">No markets found</div>';
+  document.getElementById('marketsList').innerHTML = html;
 }
 
 function addAlert() {
@@ -405,62 +620,63 @@ function addAlert() {
   var condition = document.getElementById('a-condition').value;
   var price = parseFloat(document.getElementById('a-price').value);
   var state = document.getElementById('a-state').value;
-  if (!crop||!price||!state){ alert('Please fill all fields'); return; }
-  alerts.push({ id:Date.now(), crop:crop, condition:condition, price:price, state:state, triggered:false });
+  if (!crop || !price || !state) { alert('Please fill all fields'); return; }
+  alerts.push({ id: Date.now(), crop: crop, condition: condition, price: price, state: state, triggered: false });
   localStorage.setItem('kisanAlerts', JSON.stringify(alerts));
   renderAlerts();
   checkAlerts();
 }
 
 function removeAlert(id) {
-  alerts = alerts.filter(function(a){ return a.id!==id; });
+  alerts = alerts.filter(function(a) { return a.id !== id; });
   localStorage.setItem('kisanAlerts', JSON.stringify(alerts));
   renderAlerts();
 }
 
 function renderAlerts() {
   if (!alerts.length) {
-    document.getElementById('alertsList').innerHTML = '<div class="no-data">No alerts yet.</div>';
+    document.getElementById('alertsList').innerHTML = '<div class="empty"><i class="ti ti-bell-off"></i>No alerts yet.</div>';
     return;
   }
   document.getElementById('alertsList').innerHTML = alerts.map(function(a) {
-    var dotColor = a.triggered ? '#f39c12' : '#2ecc8f';
+    var ic = a.triggered ? 'alert-triggered' : 'alert-live';
+    var statusText = a.triggered ? '<span style="color:var(--amber);font-weight:700">Triggered!</span>' : '<span style="color:var(--text-muted)">Watching...</span>';
     return '<div class="alert-item">' +
-      '<div class="alert-dot" style="background:' + dotColor + '"></div>' +
+      '<div class="alert-indicator ' + ic + '"></div>' +
       '<div style="flex:1">' +
-        '<div style="font-size:14px;font-weight:700;color:#fff">' + a.crop + ' · ' + a.condition + ' Rs.' + Number(a.price).toLocaleString('en-IN') + '/q</div>' +
-        '<div style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:2px">' + a.state + (a.triggered?' — ⚠️ Triggered!'  :' · Watching') + '</div>' +
+        '<div style="font-size:14px;font-weight:700;color:#fff">' + a.crop + ' &middot; Price goes ' + a.condition + ' Rs. ' + Number(a.price).toLocaleString('en-IN') + '/q</div>' +
+        '<div style="font-size:12px;margin-top:3px"><i class="ti ti-map-pin" style="font-size:11px;color:var(--text-muted)"></i> ' + a.state + ' &middot; ' + statusText + '</div>' +
       '</div>' +
-      '<button onclick="removeAlert(' + a.id + ')" class="btn-glass" style="padding:5px 12px;font-size:12px">Remove</button>' +
+      '<button class="btn-danger" onclick="removeAlert(' + a.id + ')"><i class="ti ti-trash" style="font-size:13px"></i> Remove</button>' +
     '</div>';
   }).join('');
 }
 
 function checkAlerts() {
   alerts.forEach(function(a) {
-    fetch(API+'/api/prices/current?commodity='+encodeURIComponent(a.crop)+'&state='+encodeURIComponent(a.state))
-      .then(function(r){return r.json();})
-      .then(function(data){
-        if(data.success&&data.prices.length>0){
-          var maxP=Math.max.apply(null,data.prices.map(function(p){return p.price;}));
-          var minP=Math.min.apply(null,data.prices.map(function(p){return p.price;}));
-          if(a.condition==='above'&&maxP>=a.price) a.triggered=true;
-          if(a.condition==='below'&&minP<=a.price) a.triggered=true;
-          localStorage.setItem('kisanAlerts',JSON.stringify(alerts));
+    fetch(API + '/api/prices/current?commodity=' + encodeURIComponent(a.crop) + '&state=' + encodeURIComponent(a.state))
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.success && data.prices.length > 0) {
+          var maxP = Math.max.apply(null, data.prices.map(function(p) { return p.price; }));
+          var minP = Math.min.apply(null, data.prices.map(function(p) { return p.price; }));
+          if (a.condition === 'above' && maxP >= a.price) a.triggered = true;
+          if (a.condition === 'below' && minP <= a.price) a.triggered = true;
+          localStorage.setItem('kisanAlerts', JSON.stringify(alerts));
           renderAlerts();
         }
-      }).catch(function(){});
+      }).catch(function() {});
   });
 }
 
-function showPage(id,btn) {
-  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
-  document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active');});
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.nav-tab').forEach(function(t) { t.classList.remove('active'); });
   document.getElementById(id).classList.add('active');
   btn.classList.add('active');
 }
 
-setInterval(function(){ fetch(API+'/health').catch(function(){}); }, 600000);
+setInterval(function() { fetch(API + '/health').catch(function() {}); }, 600000);
 init();
 </script>
 </body>
